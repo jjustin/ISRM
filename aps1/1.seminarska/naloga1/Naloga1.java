@@ -1,5 +1,7 @@
 import java.io.*;
 
+import jdk.nashorn.tools.Shell;
+
 /**
  * Naloga1
  */
@@ -60,9 +62,54 @@ public class Naloga1 {
                 mreza.close();
         }
 
+        int[] lengths = new int[besede.length];
+        for (int i = 0; i < besede.length; i++) {
+            lengths[i] = besede[i].length();
+        }
+
+        quickSort(lengths, besede, 0, besede.length - 1);
+
         resi(mr, new boolean[h][w], besede, 0);
         izhod.write(output);
         izhod.close();
+    }
+
+    public static void quickSort(int[] arr, String[] besede, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, besede, begin, end);
+
+            quickSort(arr, besede, begin, partitionIndex - 1);
+            quickSort(arr, besede, partitionIndex + 1, end);
+        }
+    }
+
+    private static int partition(int arr[], String[] besede, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] > pivot) {
+                i++;
+
+                int swapTemp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = swapTemp;
+
+                String swapTempStr = besede[i];
+                besede[i] = besede[j];
+                besede[j] = swapTempStr;
+            }
+        }
+
+        int swapTemp = arr[i + 1];
+        arr[i + 1] = arr[end];
+        arr[end] = swapTemp;
+
+        String swapTempStr = besede[i + 1];
+        besede[i + 1] = besede[end];
+        besede[end] = swapTempStr;
+
+        return i + 1;
     }
 
     public static boolean resi(char[][] mreza, boolean[][] porabljene, String[] besede, int IxBeseda) {
@@ -71,7 +118,7 @@ public class Naloga1 {
         }
         char prva = besede[IxBeseda].charAt(0);
         boolean out = false;
-        int l = besede[IxBeseda].length() - 1;
+        int l = besede[IxBeseda].length();
         int sH = 0;
         int sW = 0;
         int eH = 0;
@@ -83,68 +130,31 @@ public class Naloga1 {
                 if (!porabljene[i][j] && mreza[i][j] == prva) {
                     sH = i;
                     sW = j;
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], 1, 0, porabljene)) {
-                        eH = sH + l;
-                        eW = sW;
+                    if (l == 1) {
+                        eH = i;
+                        eW = j;
+                        porabljene[i][j] = true;
                         out = resi(mreza, porabljene, besede, IxBeseda + 1);
                         if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, 1, 0, l + 1);
+                            porabljene[i][j] = false;
                         }
+                        continue;
                     }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], 0, 1, porabljene)) {
-                        eH = sH;
-                        eW = sW + l;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, 0, 1, l + 1);
-                        }
-                    }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], -1, 0, porabljene)) {
-                        eH = sH - l;
-                        eW = sW;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, -1, 0, l + 1);
-                        }
-                    }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], 0, -1, porabljene)) {
-                        eH = sH;
-                        eW = sW - l;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, 0, -1, l + 1);
-                        }
-                    }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], 1, 1, porabljene)) {
-                        eH = sH + l;
-                        eW = sW + l;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, 1, 1, l + 1);
-                        }
-                    }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], 1, -1, porabljene)) {
-                        eH = sH + l;
-                        eW = sW - l;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, 1, -1, l + 1);
-                        }
-                    }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], -1, 1, porabljene)) {
-                        eH = sH - l;
-                        eW = sW + l;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, -1, 1, l + 1);
-                        }
-                    }
-                    if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], -1, -1, porabljene)) {
-                        eH = sH - l;
-                        eW = sW - l;
-                        out = resi(mreza, porabljene, besede, IxBeseda + 1);
-                        if (!out) {
-                            odstraniBesedoIzTabele(porabljene, i, j, -1, -1, l + 1);
+
+                    for (int deltaW = -1; deltaW <= 1; deltaW++) {
+                        for (int deltaH = -1; deltaH <= 1; deltaH++) {
+                            if (deltaH == 0 && deltaW == 0) {
+                                continue;
+                            }
+                            if (!out && pravilnaBeseda(mreza, i, j, besede[IxBeseda], deltaH, deltaW, porabljene)) {
+                                eH = sH + deltaH * (l - 1);
+                                eW = sW + deltaW * (l - 1);
+                                out = resi(mreza, porabljene, besede, IxBeseda + 1);
+                                if (!out) {
+                                    odstraniBesedoIzTabele(porabljene, i, j, deltaH, deltaW, l);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -161,12 +171,12 @@ public class Naloga1 {
     public static boolean pravilnaBeseda(char[][] mreza, int h, int w, String beseda, int deltaH, int deltaW,
             boolean[][] porabljene) {
         int l = beseda.length();
-        int konecH = h + l * deltaH;
-        int konecW = w + l * deltaW;
-        if (0 > konecH || mreza.length < konecH) {
+        int konecH = h + (l - 1) * deltaH;
+        int konecW = w + (l - 1) * deltaW;
+        if (0 > konecH || mreza.length <= konecH) {
             return false;
         }
-        if (0 > konecW || mreza[0].length < konecW) {
+        if (0 > konecW || mreza[0].length <= konecW) {
             return false;
         }
 
