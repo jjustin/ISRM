@@ -12,8 +12,8 @@ public class Naloga2 {
 
         BufferedReader in = new BufferedReader(new FileReader(args[0]));
 
-        String[] karte = null;
-        String[][] mesanja = null;
+        String[] cards = null;
+        String[][] shuffles = null;
         int n = 0;
         int m = 0;
         try {
@@ -30,11 +30,11 @@ public class Naloga2 {
 
             // Preberi mrezo
             l = in.readLine();
-            karte = l.split(",");
+            cards = l.split(",");
 
-            mesanja = new String[m][3];
+            shuffles = new String[m][3];
             for (int i = 0; i < m; i++) {
-                mesanja[i] = in.readLine().split(",");
+                shuffles[i] = in.readLine().split(",");
             }
 
         } catch (IOException ex) {
@@ -46,13 +46,13 @@ public class Naloga2 {
         }
 
         List k2 = new List();
-        for (int i = 0; i < n; i++) {
-            k2.set(i, karte[i]);
+        for (String card : cards) {
+            k2.add(card);
         }
 
         for (int i = 0; i < m; i++) {
-            k2 = shuffle(k2, mesanja[i][0], mesanja[i][1],
-                    (int) Integer.parseInt(mesanja[i][2].replaceAll("\\s+", "")));
+            k2 = shuffle(k2, shuffles[i][0], shuffles[i][1],
+                    (int) Integer.parseInt(shuffles[i][2].replaceAll("\\s+", "")));
         }
 
         PrintWriter izhod = new PrintWriter(new FileOutputStream(args[1]));
@@ -61,125 +61,132 @@ public class Naloga2 {
     }
 
     public static List shuffle(List k2, String split, String after, int len) {
-        List k1 = new List();
-        // find split index
-        int splitIx = k2.length() - 1;
-        List o = k2;
-        for (int i = 0; i < k2.length(); i++) {
-            if (o.el.equals(split)) {
-                splitIx = i;
-                break;
-            }
-            o = o.next;
-        }
-        // split k2
-        k1 = k2;
-        k2 = k1.split(splitIx);
+        List k1 = k2;
+        k2 = k1.split(split);
 
-        List insertAfter = new List();
-
-        while (k2 != null) {
-            // make new list with items to insert into insertAfter
-            List k3 = k2;
-            k2 = k3.split(len - 1);
-
-            List nxt = insertAfter.next;
-            insertAfter.next = k3;
-            k3.last().next = nxt;
-        }
-
-        for (o = k1; o != null; o = o.next) {
-            if (o.el.equals(after)) {
-                insertAfter.last().next = o.next;
-                o.next = insertAfter.next;
-                break;
-            }
-        }
-        if (o == null) {
-            insertAfter.last().next = k1;
-            k1 = insertAfter.next;
-        }
+        k1.moveFrom(k2, len, after);
 
         return k1;
     }
 
     public static class List {
-        String el;
-        List next;
+        ListElement zero;
+        ListElement last;
 
         public List() {
-            el = "";
+            zero = new ListElement("");
+            last = null;
         }
 
-        public List(List o) {
-            this.el = "";
-            this.next = o;
+        public List(ListElement le) {
+            zero = new ListElement("");
+            zero.next = le;
+            last = le;
+
+            // in case le is null we dont have last.next
+            if (le == null) {
+                return;
+            }
+            // update last to the last element
+            while (last.next != null) {
+                last = last.next;
+            }
         }
 
-        public void set(int i, String el) {
-            List o = this;
-            for (int j = 0; j < i; j++) {
-                if (o.next == null) {
-                    o.setNext(new List());
-                }
+        // gets first element on list
+        public ListElement first() {
+            return zero.next;
+        }
+
+        // add new element
+        public void add(String str) {
+            if (last == null) {
+                last = new ListElement(str);
+                zero.next = last;
+                return;
+            }
+            last.next = new ListElement(str);
+            last = last.next;
+        }
+
+        // Splits on card `on`
+        public List split(String on) {
+            ListElement o = first();
+
+            // find the element where on occurs
+            while (o != null && !o.el.equals(on)) {
                 o = o.next;
             }
-            o.el = el;
-        }
-
-        public List last() {
-            List o = this;
-            while (o.next != null) {
-                o = o.next;
-            }
-            return o;
-        }
-
-        public void setNext(List n) {
-            next = n;
-        }
-
-        public boolean hasNext() {
-            return next != null;
-        }
-
-        public List nth(int n) {
-            List o = this;
-            for (int i = 0; i < n; i++) {
-                if (next == null) {
-                    return null;
-                }
-                o = o.next;
-            }
-            return o;
-        }
-
-        public int length() {
-            int i = 1;
-            List o = this;
-            for (i = 0; o.next != null || o.next == this; i++) {
-                o = o.next;
-            }
-            return i;
-        }
-
-        public List split(int i) {
-            List o = this.nth(i);
+            // if nothing was found move everything to new list an make this one blank
             if (o == null) {
-                return null;
+                List out = new List(zero.next);
+                zero.next = null;
+                last = null;
+                return out;
             }
 
-            List out = o.next;
+            // move everything after o to new list
+            List out = new List(o.next);
+            // make o last element
             o.next = null;
+            last = o;
             return out;
         }
 
+        // moves in packets of `n` from `l` to `this` and puts every packet after
+        // `after`
+        public void moveFrom(List l, int n, String after) {
+            ListElement o = first();
+
+            // find element to place after
+            while (o != null && !o.el.equals(after)) {
+                o = o.next;
+            }
+
+            // if no element was found use root as add point
+            if (o == null) {
+                o = zero;
+            }
+            // we have to update last element
+            if (o.next == null) {
+                // TODO
+            }
+
+            while (l.zero.next != null) {
+                ListElement toRelink = o.next;
+                o.next = l.first();
+                ListElement add = l.first();
+                for (int i = 1; i < n && add.next != null; i++) {
+                    add = add.next;
+                }
+                l.zero.next = add.next;
+                add.next = toRelink;
+            }
+        }
+
+        // string output
         public String toString() {
-            String out = this.el;
-            for (List o = this.next; o != null; o = o.next) {
+            if (zero.next == null) {
+                return "";
+            }
+            String out = first().el;
+            for (ListElement o = first().next; o != null; o = o.next) {
                 out += "," + o.el;
             }
             return out;
+        }
+    }
+
+    static class ListElement {
+        String el;
+        ListElement next;
+
+        ListElement(String str) {
+            el = str;
+        }
+
+        public String toString() {
+            return el;
         }
     }
 }

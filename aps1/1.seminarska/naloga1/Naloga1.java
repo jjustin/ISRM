@@ -1,7 +1,5 @@
 import java.io.*;
 
-import jdk.nashorn.tools.Shell;
-
 /**
  * Naloga1
  */
