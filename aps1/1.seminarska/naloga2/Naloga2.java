@@ -169,11 +169,14 @@ public class Naloga2 {
             if (zero.next == null) {
                 return "";
             }
-            String out = first().el;
-            for (ListElement o = first().next; o != null; o = o.next) {
-                out += "," + o.el;
+
+            StringBuilder out = new StringBuilder(zero.next.el);
+            for (ListElement o = zero.next.next; o != null; o = o.next) {
+                out.append(",");
+                out.append(o.el);
             }
-            return out;
+
+            return out.toString();
         }
     }
 
