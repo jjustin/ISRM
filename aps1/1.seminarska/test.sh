@@ -23,7 +23,7 @@ for file in $(ls -1 I?_*.txt); do
 		continue
 	fi
 
-	diff -w <(sort O${file:1}) <(sort R${file:1}) > D${file:1}
+	diff -w O${file:1} R${file:1} > D${file:1}
 	if [ -s D${file:1} ]
 	then
 		printf " \e[31mX\033[0m\n"
