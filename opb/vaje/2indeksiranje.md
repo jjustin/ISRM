@@ -62,7 +62,7 @@ Drevo razdelimo na dve podrevesi, ki grest iz korena
 
 Minumum: 2\* ⌈a/2⌉ (d+1)^(h-1)
 
-h-1, ker nimamo korena v drevesu. d+1 dobimo iz b=m+1 in d<=m <=2d
+h-1, ker nimamo korena v drevesu. d+1 dobimo iz b=m+1 in d<=m <=2d  
 ⌈a/2⌉ je stevilo listov
 
 Maximum:

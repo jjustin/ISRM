@@ -10,7 +10,7 @@ public class Naloga1 {
         if (args.length < 2) {
             System.out.println("Uporaba: java Naloga1 <mreža> <izhod>");
             System.exit(1);
-        }
+        } 
 
         BufferedReader mreza = new BufferedReader(new FileReader(args[0]));
         PrintWriter izhod = new PrintWriter(new FileOutputStream(args[1]));
