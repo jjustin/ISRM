@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "utop-REPL",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "linux": {
+                "command": "utop -init \"${file}\""
+            },
+        },
+        {
+            "label": "OCaml",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "linux": {
+                "command": "ocaml <<< '#use \"${file}\";;'",
+                "options": {
+                    "cwd": "${workspaceRoot}"
+                }
+            },
+        },
+        {
+            "label": "utop",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "linux": {
+                "command": "utop <<< '#use \"${file}\";;'",
+                "options": {
+                    "cwd": "${workspaceRoot}"
+                }
+            }
+        }
+    ]
+}
