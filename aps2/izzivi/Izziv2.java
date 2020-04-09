@@ -71,7 +71,6 @@ public class Izziv2 {
                 switchIx(root, secondIx);
                 fixHeap(secondIx);
             }
-
         }
 
         int pop() {
@@ -88,7 +87,7 @@ public class Izziv2 {
                     replaceIx++;
                 }
 
-                // zamenjaj in posodobi inekse
+                // zamenjaj in posodobi indekse
                 switchIx(replaceIx, aIx);
                 aIx = replaceIx;
                 secondIx = 2 * aIx + 1;
@@ -117,6 +116,5 @@ public class Izziv2 {
 
             return sb.toString();
         }
-
     }
 }
