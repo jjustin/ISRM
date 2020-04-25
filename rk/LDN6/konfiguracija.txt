@@ -1,0 +1,193 @@
+# Ping in trace iz PC1 do PC2
+
+```
+PC1> ping 192.168.1.2
+84 bytes from 192.168.1.2 icmp_seq=1 ttl=62 time=1.924 ms
+84 bytes from 192.168.1.2 icmp_seq=2 ttl=62 time=1.741 ms
+84 bytes from 192.168.1.2 icmp_seq=3 ttl=62 time=1.647 ms
+84 bytes from 192.168.1.2 icmp_seq=4 ttl=62 time=1.592 ms
+84 bytes from 192.168.1.2 icmp_seq=5 ttl=62 time=1.769 ms
+
+PC1> trace 192.168.1.2
+trace to 192.168.1.2, 8 hops max, press Ctrl+C to stop
+ 1   10.0.0.1   0.633 ms  0.424 ms  0.348 ms
+ 2   1.1.1.6   1.375 ms  0.766 ms  1.144 ms
+ 3   *192.168.1.2   1.564 ms (ICMP type:3, code:3, Destination port unreachable)
+
+# prekinitev povezave
+
+PC1> ping 192.168.1.2
+84 bytes from 192.168.1.2 icmp_seq=1 ttl=61 time=2.559 ms
+84 bytes from 192.168.1.2 icmp_seq=2 ttl=61 time=2.756 ms
+84 bytes from 192.168.1.2 icmp_seq=3 ttl=61 time=2.500 ms
+84 bytes from 192.168.1.2 icmp_seq=4 ttl=61 time=2.134 ms
+84 bytes from 192.168.1.2 icmp_seq=5 ttl=61 time=3.593 ms
+
+PC1> trace 192.168.1.2
+trace to 192.168.1.2, 8 hops max, press Ctrl+C to stop
+ 1   10.0.0.1   0.407 ms  0.296 ms  0.304 ms
+ 2   1.1.1.1   1.039 ms  1.122 ms  1.133 ms
+ 3   1.1.1.9   1.864 ms  1.633 ms  1.805 ms
+ 4   *192.168.1.2   2.205 ms (ICMP type:3, code:3, Destination port unreachable)
+
+PC1>
+```
+
+# Posredovalne tabele
+
+## R1
+
+```
+vyos@vyos:~$ show ip bgp
+BGP table version is 0, local router ID is 1.1.1.5
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, R Removed
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 10.0.0.0/30      0.0.0.0                  1         32768 i
+*  172.16.6.0/30    1.1.1.6                                0 65532 65533 i
+*>                  1.1.1.1                  1             0 65533 i
+*> 192.168.1.0/30   1.1.1.6                  1             0 65532 i
+*                   1.1.1.1                                0 65533 65532 i
+```
+
+## R2
+
+```
+vyos@vyos:~$ show ip bgp
+BGP table version is 0, local router ID is 1.1.1.9
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, R Removed
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 10.0.0.0/30      1.1.1.5                  1             0 65531 i
+*                   1.1.1.10                               0 65533 65531 i
+*  172.16.6.0/30    1.1.1.5                                0 65531 65533 i
+*>                  1.1.1.10                 1             0 65533 i
+*> 192.168.1.0/30   0.0.0.0                  1         32768 i
+
+Total number of prefixes 3
+```
+
+## R3
+
+```
+vyos@vyos:~$ show ip bgp
+BGP table version is 0, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, R Removed
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*  10.0.0.0/30      1.1.1.9                                0 65532 65531 i
+*>                  1.1.1.2                  1             0 65531 i
+*> 172.16.6.0/30    0.0.0.0                  1         32768 i
+*  192.168.1.0/30   1.1.1.2                                0 65531 65532 i
+*>                  1.1.1.9                  1             0 65532 i
+
+Total number of prefixes 3
+```
+
+# Setup ukazi
+
+## IPs
+
+- 10.0.0.0/30
+- 192.168.1.0/30
+- 172.16.6.0/30
+- 1.1.1.0/24
+  - 1.1.1.0/30
+  - 1.1.1.4/30
+  - 1.1.1.8/30
+
+## PC1 10.0.0.2
+
+config:
+
+```
+set pcname PC1
+ip 10.0.0.2 /30 10.0.0.1
+```
+
+## PC2 192.168.1.2
+
+config:
+
+```
+set pcname PC2
+ip 192.168.1.2 /30 192.168.1.1
+```
+
+## PC3 172.16.6.2
+
+config:
+
+```
+set pcname PC3
+ip 172.16.6.2 /30 172.16.6.1
+```
+
+## R1
+
+```
+configure
+set interfaces ethernet eth0 address 10.0.0.1/30
+set interfaces ethernet eth1 address 1.1.1.5/30
+set interfaces ethernet eth2 address 1.1.1.2/30
+
+set protocols bgp 65531 neighbor 1.1.1.6 remote-as '65532'
+set protocols bgp 65531 neighbor 1.1.1.1 remote-as '65533'
+
+set protocols bgp 65531 neighbor 1.1.1.6 update-source 1.1.1.5
+set protocols bgp 65531 neighbor 1.1.1.1 update-source 1.1.1.2
+
+set protocols bgp 65531 network 10.0.0.0/30
+
+commit
+save
+exit
+```
+
+## R2
+
+```
+configure
+set interfaces ethernet eth0 address 192.168.1.1/30
+set interfaces ethernet eth1 address 1.1.1.9/30
+set interfaces ethernet eth2 address 1.1.1.6/30
+
+set protocols bgp 65532 neighbor 1.1.1.5 remote-as '65531'
+set protocols bgp 65532 neighbor 1.1.1.10 remote-as '65533'
+
+set protocols bgp 65532 neighbor 1.1.1.5 update-source 1.1.1.6
+set protocols bgp 65532 neighbor 1.1.1.10 update-source 1.1.1.9
+
+set protocols bgp 65532 network 192.168.1.0/30
+
+commit
+save
+exit
+```
+
+## R3
+
+```
+configure
+set interfaces ethernet eth0 address 172.16.6.1/30
+set interfaces ethernet eth1 address 1.1.1.1/30
+set interfaces ethernet eth2 address 1.1.1.10/30
+
+set protocols bgp 65533 neighbor 1.1.1.2 remote-as '65531'
+set protocols bgp 65533 neighbor 1.1.1.9 remote-as '65532'
+
+set protocols bgp 65533 neighbor 1.1.1.2 update-source 1.1.1.1
+set protocols bgp 65533 neighbor 1.1.1.9 update-source 1.1.1.10
+
+set protocols bgp 65533 network 172.16.6.0/30
+
+commit
+save
+exit
+```
