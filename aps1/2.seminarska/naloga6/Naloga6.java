@@ -63,6 +63,9 @@ public class Naloga6 {
                     output.append(gn.name);
                     output.append("\n");
                 }
+                if (gn.color == 0) {
+                    rageQuit();
+                }
             }
 
             izhod.write(output.toString());
@@ -79,8 +82,7 @@ public class Naloga6 {
     }
 
     public static void rageQuit() { // invalid input
-        output.append("-1");
-        izhod.write(output.toString());
+        izhod.write("-1");
         izhod.close();
         System.exit(0);
     }
