@@ -1,0 +1,29 @@
+# Linux
+``` 
+sudo ifconfig eth0 192.168.1.100 netmask 255.255.255.0 up
+```
+
+#1
+```
+ifconfig eth0 192.168.1.1 netmask 255.255.255.0 up
+
+
+cd etc/bind
+vim named.conf
+
+zone "justin.rk" {
+        type master;
+        file "/etc/bind/db.justin";
+};
+:wq
+
+cp db.local db.justin
+
+```
+
+#2
+
+```
+ifconfig eth0 192.168.1.2 netmask 255.255.255.0 up
+
+```
