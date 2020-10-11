@@ -1,0 +1,48 @@
+Koncujem z: 9/3-8/2-7/1-6/5*4+6*5/4
+9/3-8/2-7/1-6/5*4
+6*5/4
+Koncujem z: 9/3-8/2-7/1-6/5*4
+9/3-8/2-7/1
+6/5*4
+Koncujem z: 9/3-8/2-7/1
+9/3-8/2
+7/1
+Koncujem z: 9/3-8/2
+9/3
+8/2
+Koncujem z: 9/3
+9
+3
+Koncujem z: 9
+Koncujem z: 3
+Koncujem z: 8/2
+8
+2
+Koncujem z: 8
+Koncujem z: 2
+Koncujem z: 7/1
+7
+1
+Koncujem z: 7
+Koncujem z: 1
+Koncujem z: 6/5*4
+6/5
+4
+Koncujem z: 6/5
+6
+5
+Koncujem z: 6
+Koncujem z: 5
+Koncujem z: 4
+Koncujem z: 6*5/4
+6*5
+4
+Koncujem z: 6*5
+6
+5
+Koncujem z: 6
+Koncujem z: 5
+Koncujem z: 4
+11
+93/82/-71/-65/4*-65*4/+
+-5

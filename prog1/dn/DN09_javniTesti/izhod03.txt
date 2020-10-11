@@ -1,0 +1,11 @@
+5 | vesel
+8 | vesel/rad
+12 | vesel/rad/lepe
+22 | mlad/vesel/rad/lepe
+33 | Bil/mlad/vesel/rad/lepe
+39 | Bil/mlad/vesel/in/rad/lepe
+44 | Bil/mlad/vesel/in/rad/sem/lepe
+47 | Bil/mlad/vesel/in/rad/sem/lepe/pel
+54 | Bil/mlad/vesel/in/rad/sem/lepe/pesmi/pel
+73 | Bil/sem/mlad/vesel/in/rad/sem/lepe/pesmi/pel
+91 | Bil/sem/mlad/fant/vesel/in/rad/sem/lepe/pesmi/pel

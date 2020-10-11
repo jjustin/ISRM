@@ -1,0 +1,12 @@
++ 0 vesel
+# rad
++ 2 lepe
++ 0 mlad
++ 0 Bil
++ 3 in
++ 5 sem
+# pel
++ 7 pesmi
++ 1 sem
++ 3 fant
+x

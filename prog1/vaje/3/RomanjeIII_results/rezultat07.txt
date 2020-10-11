@@ -1,0 +1,1 @@
+1. dan: 10 -> 9 (prehodil 1)

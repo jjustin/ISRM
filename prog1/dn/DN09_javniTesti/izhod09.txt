@@ -1,0 +1,24 @@
+6 | srecna
+9 | srecna/vas
+17 | Vrba/srecna/vas
+24 | Vrba/srecna/draga/vas
+30 | Vrba/srecna/draga/vas/domaca
+41 | O/Vrba/srecna/draga/vas/domaca
+62 | O/Vrba/draga/vas/domaca
+74 | O/Vrba/srecna/draga/vas/domaca
+91 | Vrba/srecna/draga/vas/domaca
+103 | Vrba/srecna/draga/vas
+109 | Vrba/srecna/draga/vas/domaca
+118 | Vrba/srecna/draga/domaca
+123 | Vrba/srecna/draga/vas/domaca
+135 | Vrba/srecna/draga/vas
+148 | Vrba/srecna/vas
+162 | srecna/vas
+170 | Vrba/srecna/vas
+177 | Vrba/srecna/draga/vas
+183 | Vrba/srecna/draga/vas/domaca
+195 | Vrba/srecna/draga/vas
+208 | Vrba/srecna/vas
+222 | srecna/vas
+228 | srecna
+240 | 

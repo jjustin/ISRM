@@ -1,0 +1,23 @@
+    Darilo          Klobuk
+     2 GBP       2542 mEUR
+     4 EUR       6542 mEUR
+     2 USD       8120 mEUR
+     4 EUR      12120 mEUR
+     2 EUR      14120 mEUR
+     4 GBP      19204 mEUR
+     4 USD      22360 mEUR
+     6 EUR      28360 mEUR
+     1 GBP      29631 mEUR
+     2 GBP      32173 mEUR
+     5 EUR      37173 mEUR
+     5 USD      41118 mEUR
+     2 USD      42696 mEUR
+     5 GBP      49051 mEUR
+     5 EUR      54051 mEUR
+     1 GBP      55322 mEUR
+     2 USD      56900 mEUR
+     3 USD      59267 mEUR
+     4 USD      62423 mEUR
+     0 EUR      62423 mEUR
+     5 USD      66368 mEUR
+     5 GBP      72723 mEUR

@@ -1,0 +1,12 @@
+5 | licet
+12 | hodie/licet
+16 | hodie/licet/Iovi
+21 | hodie/licet/Iovi/licet
+40 | licet/Iovi/licet
+45 | licet/Iovi/non/licet
+49 | licet/Iovi/non/licet/mihi
+55 | licet/Iovi/non/licet/cras/mihi
+71 | quod/licet/Iovi/non/licet/cras/mihi
+82 | quod/licet/Iovi/non/licet/mihi
+88 | quod/licet/Iovi/non/licet/bovi/mihi
+96 | quod/licet/Iovi/non/licet/bovi

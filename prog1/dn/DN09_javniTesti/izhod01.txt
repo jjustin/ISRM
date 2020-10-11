@@ -1,0 +1,6 @@
+1 | O
+5 | O/Vrba
+11 | O/Vrba/srecna
+16 | O/Vrba/srecna/draga
+19 | O/Vrba/srecna/draga/vas
+25 | O/Vrba/srecna/draga/vas/domaca

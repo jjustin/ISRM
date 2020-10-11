@@ -1,0 +1,8 @@
+6 | nekdaj
+16 | nekdaj/Ljubljanke
+22 | nekdaj/lepe/Ljubljanke
+30 | Od/nekdaj/lepe/Ljubljanke
+36 | Od/nekdaj/so/lepe/Ljubljanke
+46 | Od/nekdaj/lepe/Ljubljanke
+53 | Od/nekdaj/lepe/Ljubljanke/slovele
+59 | Od/nekdaj/lepe/so/Ljubljanke/slovele
