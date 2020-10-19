@@ -1,0 +1,3 @@
+[submodule "prpo/prpo-hello-world"]
+	path = prpo/prpo-hello-world
+	url = https://github.com/jjustin/prpo-hello-world
