@@ -1,0 +1,20 @@
+public class Test {
+    public static void main(String[] args) {
+        Machine m = new Machine();
+
+        // m.memory.setByte(0, 33);
+        // System.out.println(m.memory.getByte(0));
+        // m.memory.setByte(0, -33);
+        // System.out.println(m.memory.getByte(0));
+        // m.memory.setFloat(0, 300.1);
+        // double x = m.memory.getFloat(0);
+        // m.memory.setFloat(0, 400.5);
+        // double y = m.memory.getFloat(0);
+        // System.out.println(x + y);
+        // System.out.println(Long.toBinaryString(Double.doubleToLongBits(400.5 +
+        // 300.1)));
+        // System.out.println(Long.toBinaryString(Double.doubleToLongBits(x + y)));
+
+        m.getDevice(1).write((byte) 0x40);
+    }
+}

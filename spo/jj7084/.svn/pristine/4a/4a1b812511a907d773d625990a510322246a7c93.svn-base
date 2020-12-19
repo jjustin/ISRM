@@ -1,0 +1,34 @@
+/**
+ * Machine
+ */
+public class Machine {
+    Registers registers = new Registers();
+    Memory memory = new Memory();
+    Device[] devices = new Device[256];
+
+    Machine() {
+        devices[0] = new InputDevice(System.in);
+        devices[1] = new OutputDevice(System.out);
+        devices[2] = new OutputDevice(System.err);
+    }
+
+    Device getDevice(int n) {
+        if (0 <= n && n < 256) {
+            if (devices[n] == null) {
+                devices[n] = new FileDevice(n);
+            }
+            return devices[n];
+        } else {
+            System.out.printf("Device %d is out of bounds, returning first device", n);
+            return devices[0];
+        }
+    }
+
+    void setDevice(int n, Device device) {
+        if (n < 256) {
+            devices[n] = device;
+        } else {
+            System.out.printf("Device %d is out of bounds, nothing was set", n);
+        }
+    }
+}

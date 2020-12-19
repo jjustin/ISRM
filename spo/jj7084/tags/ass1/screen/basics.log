@@ -1,0 +1,36 @@
+***** Section <default> *****
+Stats: size=132  blocks=132  symbols=17  literals=8  relocations=0
+Blocks
+    name        start   size  #ins #dir #sto
+    <default>   00000  00084    31   14    0
+Symbols
+    name                    hex       dec  scope     kind      type      description
+    *0                   00006C       108  local     relative  data      label
+    *1                   00006F       111  local     relative  data      label
+    *2                   000072       114  local     relative  data      label
+    *3                   000075       117  local     relative  data      label
+    *4                   000078       120  local     relative  data      label
+    *5                   00007B       123  local     relative  data      label
+    *6                   00007E       126  local     relative  data      label
+    *7                   000081       129  local     relative  data      label
+    basics               000000         0  local     relative  code      label
+    halt                 00004E        78  local     relative  code      label
+    incMid               000051        81  local     relative  code      label
+    screenEndPtr         000069       105  local     relative  data      label
+    screenFrstLnEndPtr   000060        96  local     relative  data      label
+    screenLastLnStrPtr   000066       102  local     relative  data      label
+    screenMidPtr         000063        99  local     relative  data      label
+    screenStrPtr         00005D        93  local     relative  data      label
+    scrn                 000000         0  exported  relative  code      label
+Literals
+    label   definition
+    *0      WORD 76
+    *1      WORD 77
+    *2      WORD 65
+    *3      WORD 79
+    *4      WORD 71
+    *5      WORD 84
+    *6      WORD 69
+    *7      WORD 0
+Relocations
+    address length flag symbol

@@ -1,0 +1,49 @@
+00000            scrn                START   0    
+00000  032069    basics              LDA     *0 (WORD 76)    . L
+00003  562057                        STCH    @screenStrPtr    
+00006  032066                        LDA     *1 (WORD 77)    . M
+00009  562054                        STCH    @screenFrstLnEndPtr    
+0000C  032063                        LDA     *2 (WORD 65)    . A
+0000F  562054                        STCH    @screenLastLnStrPtr    
+00012  032060                        LDA     *3 (WORD 79)    . O
+00015  562051                        STCH    @screenEndPtr    
+                  
+00018  03205D                        LDA     *4 (WORD 71)    . G
+0001B  562045                        STCH    @screenMidPtr    
+0001E  4B2030                        JSUB    incMid    
+00021  032051                        LDA     *3 (WORD 79)    . O
+00024  56203C                        STCH    @screenMidPtr    
+00027  4B2027                        JSUB    incMid    
+0002A  03204E                        LDA     *5 (WORD 84)    . T
+0002D  562033                        STCH    @screenMidPtr    
+00030  4B201E                        JSUB    incMid    
+00033  032045                        LDA     *5 (WORD 84)    . T
+00036  56202A                        STCH    @screenMidPtr    
+00039  4B2015                        JSUB    incMid    
+0003C  03203F                        LDA     *6 (WORD 69)    . E
+0003F  562021                        STCH    @screenMidPtr    
+00042  4B200C                        JSUB    incMid    
+00045  032027                        LDA     *1 (WORD 77)    . M
+00048  562018                        STCH    @screenMidPtr    
+0004B  4B2003                        JSUB    incMid    
+                  
+0004E  3F2FFD    halt                J       halt    
+                  
+00051  07200F    incMid              LDX     screenMidPtr    
+00054  2F202A                        TIX     *7 (WORD 0)    
+00057  132009                        STX     screenMidPtr    
+0005A  4F0000                        RSUB        
+                  
+0005D  00B800    screenStrPtr        WORD    47104    . start of text
+00060  00B84F    screenFrstLnEndPtr  WORD    47183    . end of first line
+00063  00BBE4    screenMidPtr        WORD    48100    . middle of screen
+00066  00BF80    screenLastLnStrPtr  WORD    49024    . start of last line
+00069  00BFCF    screenEndPtr        WORD    49103    . end of screen
+0006C  00004C    *0                  WORD    76    
+0006F  00004D    *1                  WORD    77    
+00072  000041    *2                  WORD    65    
+00075  00004F    *3                  WORD    79    
+00078  000047    *4                  WORD    71    
+0007B  000054    *5                  WORD    84    
+0007E  000045    *6                  WORD    69    
+00081  000000    *7                  WORD    0    

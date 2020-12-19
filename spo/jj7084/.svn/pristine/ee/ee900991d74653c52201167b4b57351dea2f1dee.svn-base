@@ -1,0 +1,148 @@
+public class Registers {
+    private int A, X, L, B, S, T;
+    private double F;
+    private int PC, SW;
+
+    private static final int REG_SIZE = 0xFFFFFF;
+
+    public int getA() {
+        return A;
+    }
+
+    public void setA(int a) {
+        A = a & REG_SIZE;
+    }
+
+    public int getX() {
+        return X;
+    }
+
+    public void setX(int x) {
+        X = x & REG_SIZE;
+    }
+
+    public int getL() {
+        return L;
+    }
+
+    public void setL(int l) {
+        L = l & REG_SIZE;
+    }
+
+    public int getB() {
+        return B;
+    }
+
+    public void setB(int b) {
+        B = b & REG_SIZE;
+    }
+
+    public int getS() {
+        return S;
+    }
+
+    public void setS(int s) {
+        S = s & REG_SIZE;
+    }
+
+    public int getT() {
+        return T;
+    }
+
+    public void setT(int t) {
+        T = t & REG_SIZE;
+    }
+
+    public double getF() {
+        return F;
+    }
+
+    public void setF(double f) {
+        F = f;
+    }
+
+    public int getPC() {
+        return PC;
+    }
+
+    public void setPC(int pC) {
+        if (pC >= REG_SIZE) {
+            System.out.println("PC overflow");
+        }
+        PC = pC & REG_SIZE;
+    }
+
+    public int getSW() {
+        return SW;
+    }
+
+    public void setSWlt() {
+        SW = 0;
+    }
+
+    public void setSWeq() {
+        SW = 0x40;
+    }
+
+    public void setSWgt() {
+        SW = 0x80;
+    }
+
+    /**
+     * 
+     * INDEX SETTERS
+     * 
+     */
+    public static final int iA = 0;
+    public static final int iX = 1;
+    public static final int iL = 2;
+    public static final int iB = 3;
+    public static final int iS = 4;
+    public static final int iT = 5;
+
+    public int getI(int regNo) {
+        switch (regNo) {
+            case iA:
+                return getA();
+            case iX:
+                return getX();
+            case iL:
+                return getL();
+            case iB:
+                return getB();
+            case iS:
+                return getS();
+            case iT:
+                return getT();
+            default:
+                System.out.printf("Unknown register index %d\n", regNo);
+                return 0;
+        }
+    }
+
+    public void setI(int regNo, int val) {
+        switch (regNo) {
+            case iA:
+                setA(val);
+                break;
+            case iX:
+                setX(val);
+                break;
+            case iL:
+                setL(val);
+                break;
+            case iB:
+                setB(val);
+                break;
+            case iS:
+                setS(val);
+                break;
+            case iT:
+                setT(val);
+                break;
+            default:
+                System.out.printf("Unknown register index %d\n", regNo);
+        }
+
+    }
+}

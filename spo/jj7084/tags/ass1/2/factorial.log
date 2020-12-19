@@ -1,0 +1,59 @@
+***** Section <default> *****
+Stats: size=503  blocks=503  symbols=38  literals=10  relocations=0
+Blocks
+    name        start   size  #ins #dir #sto
+    <default>   00000  001F7   104   19    2
+Symbols
+    name              hex       dec  scope     kind      type      description
+    *0             0001D9       473  local     relative  data      label
+    *1             0001DC       476  local     relative  data      label
+    *2             0001DF       479  local     relative  data      label
+    *3             0001E2       482  local     relative  data      label
+    *4             0001E5       485  local     relative  data      label
+    *5             0001E8       488  local     relative  data      label
+    *6             0001EB       491  local     relative  data      label
+    *7             0001EE       494  local     relative  data      label
+    *8             0001F1       497  local     relative  data      label
+    *9             0001F4       500  local     relative  data      label
+    checkNL        000016        22  local     relative  code      label
+    echoFactEq     0001A7       423  local     relative  code      label
+    echoln         000192       402  local     relative  code      label
+    echonum        000145       325  local     relative  code      label
+    endRead        000029        41  local     relative  code      label
+    fact           000000         0  local     relative  code      label
+    factorial      000049        73  local     relative  code      label
+    factrec        000052        82  local     relative  code      label
+    halt           000046        70  local     relative  code      label
+    inDev          000144       324  local     relative  data      label
+    newline        0001CC       460  local     relative  data      label
+    next           0001CD       461  local     relative  data      label
+    numDec         0001D1       465  local     relative  data      label
+    numLoop        000151       337  local     relative  code      label
+    numLoopPrint   000176       374  local     relative  code      label
+    prog           000000         0  exported  relative  code      label
+    read           000005         5  local     relative  code      label
+    readNex        000003         3  local     relative  code      label
+    readmid        00001C        28  local     relative  code      label
+    stack          0000AE       174  local     relative  data      label
+    stackinit      000075       117  local     relative  code      label
+    stackpop       000096       150  local     relative  code      label
+    stackptr       0000AB       171  local     relative  data      label
+    stackpush      000084       132  local     relative  code      label
+    stacktmp       0000A8       168  local     relative  data      label
+    stdout         0001D0       464  local     relative  data      label
+    tmp            0001C8       456  local     relative  data      label
+    tmp2           0001C9       457  local     relative  data      label
+Literals
+    label   definition
+    *0      WORD 13
+    *1      WORD 10
+    *2      WORD 48
+    *3      WORD 2
+    *4      WORD 0
+    *5      WORD 1
+    *6      WORD 3
+    *7      WORD 33
+    *8      WORD 32
+    *9      WORD 61
+Relocations
+    address length flag symbol
