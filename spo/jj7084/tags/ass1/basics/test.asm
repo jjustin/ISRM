@@ -1,2 +1,0 @@
-START 0
-test  LDCH =66

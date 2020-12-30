@@ -1,0 +1,81 @@
+package sic.code;
+
+// used for generating obj files
+public class ObjectGenerator {
+    public static final int MAX_T_LEN = 30;
+
+    StringBuilder sb;
+    int offset;
+    int currentBlockLen;
+    StringBuilder currentBlock;
+
+    int end;
+
+    ObjectGenerator(String name, int start, int programLen) {
+        sb = new StringBuilder();
+        sb.append(String.format("H%-6s%06X%06X\n", name, start, programLen));
+
+        offset = start;
+        end = start;
+        currentBlockLen = 0;
+        currentBlock = new StringBuilder();
+    }
+
+    public void append(String s) {
+        if (currentBlockLen + s.length() / 2 >= MAX_T_LEN) {
+            addTEntry();
+        }
+        currentBlock.append(s);
+        currentBlockLen += s.length() / 2; // we want the length in bytes
+    }
+
+    public void skip(int n) {
+        // while (n <= 0) {
+        // int remaining = MAX_T_LEN - currentBlockLen;
+        // int toSkip = (remaining - n < 0) ? remaining : MAX_T_LEN;
+        // append("0".repeat(toSkip));
+        // n -= toSkip;
+        // }
+        addTEntry(offset + currentBlockLen + n);
+    }
+
+    private void addTEntry(int offsetTo) {
+        if (currentBlockLen > 0) { // if currentBlockLen==0 => nothing was added to last block
+            sb.append(String.format("T%06X%02X%s\n", offset, currentBlockLen, currentBlock.toString()));
+            offset = offsetTo;
+            currentBlockLen = 0;
+            currentBlock = new StringBuilder();
+        }
+    }
+
+    private void addTEntry() {
+        addTEntry(offset + currentBlockLen);
+    }
+
+    public void jumpTo(int n) {
+        addTEntry(n);
+    }
+
+    public void addE() {
+        if (currentBlockLen > 0) {
+            addTEntry();
+        }
+        sb.append(String.format("E%06X\n", end));
+    }
+
+    public void addM(int addr, int len) {
+        if (currentBlockLen > 0) {
+            addTEntry();
+        }
+        sb.append(String.format("M%06X%02X\n", addr, len));
+    }
+
+    public void setE(int e) {
+        end = e;
+    }
+
+    @Override
+    public String toString() {
+        return sb.toString();
+    }
+}

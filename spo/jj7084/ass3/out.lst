@@ -1,0 +1,212 @@
+000000             p      START 0          
+000000  4B2176     pp     JSUB  stackinit  
+000003  4B2033            JSUB  prepareTerms 
+000006  4B2124            JSUB  drawCoord  
+000009  07223C            LDX   *0(WORD -40) 
+00000C  4B208F     loop   JSUB  calc       
+00000F  272089            DIV   quotx      
+000012  0F215E            STA   y          
+000015  132158            STX   x          
+000018  4B20D3            JSUB  drawPoint  
+00001B  2F222D            TIX   *1(WORD 40) 
+00001E  3B2FEB            JLT   loop       
+000021  3F2FFD     halt   J     halt       
+                  .......................Parameters............................
+                  . yscale should divide xscale
+000024  000004     yscale WORD  4          
+000027  000008     xscale WORD  8          
+00002A  FFFFFD     polynom WORD  -3          .x ^4
+00002D  FFFFFF            WORD  -1          . x^3
+000030  000002            WORD  2           . x^2
+000033  000003            WORD  3           . x^1
+000036  000000     polycons WORD  0           . x^0
+000039             polyend EQU   *          
+                  ........................Term preperator......................
+000039  162173     prepareTerms STL   @stackptr  
+00003C  4B2149            JSUB  stackpush  
+                  . calculate number of terms
+00003F  012FF7            LDA   #polyend   
+000042  1D2FE5            SUB   #polynom   
+000045  1F2206            SUB   *2(WORD 1) 
+000048  272206            DIV   *3(WORD 3) 
+00004B  4B2036            JSUB  pow         .calulate power of polynom
+00004E  272FD3            DIV   yscale      
+000051  0F2047            STA   quotx       . was divided to avoid multipling and then dividing
+000054  232FCD            MUL   yscale     
+                  . iterate over all entries and multiply each with 8 time less
+000057  6D2FDC            LDS   #polycons  
+00005A  7F208B            STS   polytmp    
+00005D  762088     prepTermsLoop LDT   @polytmp   
+000060  9805              MULR  A, T       
+000062  862083            STT   @polytmp   
+000065  272FBF            DIV   xscale     
+                  .inc counter
+000068  752FBF            LDT   #polynom   
+00006B  A045              COMPR S, T       
+00006D  33200B            JEQ   endPrepTermsLoop 
+000070  7721E1            LDT   *4(WORD 3) 
+000073  9454              SUBR  T, S       
+000075  7F2070            STS   polytmp    
+000078  3F2FE2            J     prepTermsLoop 
+00007B  4B211C     endPrepTermsLoop JSUB  stackpop   
+00007E  0A212E            LDL   @stackptr  
+000081  4C0000            RSUB             
+                  . loads xscale^A into A
+000084  B410       pow    CLEAR X          
+000086  0F200F            STA   powVar     
+000089  0321CB            LDA   *5(WORD 1) 
+00008C  232F98     powloop MUL   xscale     
+00008F  2F2006            TIX   powVar     
+000092  3B2FF7            JLT   powloop    
+000095  4C0000            RSUB             
+000098  000000     powVar WORD  0          
+00009B  000000     quotx  WORD  0           . quotient by which we divide
+                  .........................CALCULATOR.....................
+                  . calculates p(x) with x provieded in X. Output is returned in A
+00009E  16210E     calc   STL   @stackptr  
+0000A1  4B20E4            JSUB  stackpush  
+0000A4  862108            STT   @stackptr  
+0000A7  4B20DE            JSUB  stackpush  
+0000AA  7E2102            STS   @stackptr  
+0000AD  4B20D8            JSUB  stackpush  
+0000B0  6D2F77            LDS   #polynom    . init
+0000B3  7F2035            STS   polyNext   
+0000B6  022032            LDA   @polyNext   
+                  . callloop gets next polynom term constant and executes one step
+                  . of honer algorithm on it
+                  . S is used as pointer to terms
+                  . T is used for incrementing S and storing current term
+                  . increment polynext
+0000B9  77219E     calloop LDT   *6(WORD 3) 
+0000BC  9054              ADDR  T, S        . increment polyNext
+0000BE  7F202A            STS   polyNext    .here polynext points to next polynom term
+                  . check if polynext is out of bounds
+0000C1  752F75            LDT   #polyend   
+0000C4  A045              COMPR S, T        . check if polynext is out of bounds
+0000C6  33200A            JEQ   calendloop  . polynext is out of bound -> return result
+                  . get next term
+0000C9  76201F            LDT   @polyNext   . T contains current term
+                  . horner is done here
+0000CC  9810              MULR  X, A       
+0000CE  9050              ADDR  T, A       
+0000D0  3F2FE6            J     calloop    
+                  . restore registers
+0000D3  4B20C4     calendloop JSUB  stackpop   
+0000D6  6E20D6            LDS   @stackptr  
+0000D9  4B20BE            JSUB  stackpop   
+0000DC  7620D0            LDT   @stackptr  
+0000DF  4B20B8            JSUB  stackpop   
+0000E2  0A20CA            LDL   @stackptr  
+0000E5  4C0000            RSUB             
+0000E8  000000     polytmp WORD  0          
+0000EB  000000     polyNext WORD  0          
+                  ...........................SCREEN...........................
+                  . #Columns = 80
+                  . #Rows = 25
+                  . drawn point on screen
+0000EE  0E20BE     drawPoint STA   @stackptr  
+                  . move xy coordss to screen coords
+0000F1  03207C            LDA   x          
+0000F4  1B2166            ADD   *7(WORD 40) 
+0000F7  0F2076            STA   x          
+0000FA  032076            LDA   y          
+0000FD  232160            MUL   *8(WORD -1) 
+000100  1B2160            ADD   *9(WORD 12) 
+000103  0F206D            STA   y          
+                  . calculate point
+000106  03206A            LDA   y          
+000109  23215A            MUL   *10(WORD 80) 
+00010C  1B2061            ADD   x          
+00010F  1B2058            ADD   screen     
+                  .check if we are on screen
+000112  2B2055            COMP  screen     
+000115  3B200F            JLT   drawPointEnd 
+000118  2B2052            COMP  screenend  
+00011B  372009            JGT   drawPointEnd 
+                  .drawing
+00011E  0F2055            STA   scrpos     
+000121  032145            LDA   *11(WORD 42) 
+000124  56204F            STCH  @scrpos    
+000127  022085     drawPointEnd LDA   @stackptr  
+00012A  4C0000            RSUB             
+                  . draws coord system
+                  . draw down
+00012D  03203A     drawCoord LDA   screen     
+000130  1B2139            ADD   *12(WORD 39) 
+000133  B410              CLEAR X          
+000135  0F203E     drawCoordLoop1 STA   scrpos     
+000138  032134            LDA   *13(WORD 124)  . |
+00013B  562038            STCH  @scrpos    
+00013E  032035            LDA   scrpos     
+000141  1B212E            ADD   *14(WORD 80) 
+000144  2F212E            TIX   *15(WORD 25) 
+000147  3B2FEB            JLT   drawCoordLoop1 
+                  . across
+00014A  03201D            LDA   screen     
+00014D  1B2128            ADD   *16(WORD 961) 
+000150  B410              CLEAR X          
+000152  0F2021     drawCoordLoop2 STA   scrpos     
+000155  032123            LDA   *17(WORD 45)  .
+000158  56201B            STCH  @scrpos    
+00015B  032018            LDA   scrpos     
+00015E  1B211D            ADD   *18(WORD 1) 
+000161  2F211D            TIX   *19(WORD 80) 
+000164  3B2FEB            JLT   drawCoordLoop2 
+000167  4C0000            RSUB             
+00016A  00B7FF     screen WORD  47103       . B800
+00016D  00BFD0     screenend WORD  49104      
+000170  000000     x      WORD  0          
+000173  000000     y      WORD  0          
+000176  000000     scrpos WORD  0          
+                  ........................... STACK ..........................
+                  . store values
+000179  0F2030     stackinit STA   stacktmp   
+                  . init stackptr value
+00017C  012033            LDA   #stack     
+00017F  0F202D            STA   stackptr   
+                  . restore values
+000182  032027            LDA   stacktmp   
+000185  4C0000            RSUB             
+                  . store values
+000188  0F2021     stackpush STA   stacktmp   
+                  . move pointer up
+00018B  032021            LDA   stackptr   
+00018E  1B20F3            ADD   *20(WORD 3) 
+000191  0F201B            STA   stackptr   
+                  . restore values
+000194  032015            LDA   stacktmp   
+000197  4C0000            RSUB             
+                  . store values
+00019A  0F200F     stackpop STA   stacktmp   
+                  . move pointer down
+00019D  03200F            LDA   stackptr   
+0001A0  1F20E4            SUB   *21(WORD 3) 
+0001A3  0F2009            STA   stackptr   
+                  . restore values
+0001A6  032003            LDA   stacktmp   
+0001A9  4C0000            RSUB             
+0001AC  000000     stacktmp WORD  0          
+0001AF  000000     stackptr WORD  0          
+0001B2  00..00     stack  RESW  50         
+000248  FFFFD8     *0     WORD  -40        
+00024B  000028     *1     WORD  40         
+00024E  000001     *2     WORD  1          
+000251  000003     *3     WORD  3          
+000254  000003     *4     WORD  3          
+000257  000001     *5     WORD  1          
+00025A  000003     *6     WORD  3          
+00025D  000028     *7     WORD  40         
+000260  FFFFFF     *8     WORD  -1         
+000263  00000C     *9     WORD  12         
+000266  000050     *10    WORD  80         
+000269  00002A     *11    WORD  42         
+00026C  000027     *12    WORD  39         
+00026F  00007C     *13    WORD  124        
+000272  000050     *14    WORD  80         
+000275  000019     *15    WORD  25         
+000278  0003C1     *16    WORD  961        
+00027B  00002D     *17    WORD  45         
+00027E  000001     *18    WORD  1          
+000281  000050     *19    WORD  80         
+000284  000003     *20    WORD  3          
+000287  000003     *21    WORD  3          

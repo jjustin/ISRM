@@ -1,4 +1,3 @@
-
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -85,17 +84,22 @@ public class GUI extends Frame implements Controller.stepCallback {
 
     class LoadObjEventListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            JFileChooser chooser = new JFileChooser();
+            JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
             chooser.showOpenDialog(g);
             File file = chooser.getSelectedFile();
-            try {
-                Reader reader = new BufferedReader(new FileReader(file));
-                c.m.load(reader);
-                System.out.println("File read");
-                update();
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
+
+            loadFile(file.getAbsolutePath());
+        }
+    }
+
+    public void loadFile(String file) {
+        try {
+            Reader reader = new BufferedReader(new FileReader(file));
+            c.m.load(reader);
+            System.out.println("File read");
+            update();
+        } catch (Exception ex) {
+            System.out.println("Failed to read file: " + ex.getMessage());
         }
     }
 
@@ -170,6 +174,9 @@ public class GUI extends Frame implements Controller.stepCallback {
 
     public static void main(String[] args) {
         GUI g = new GUI();
+        if (args.length >= 1) {
+            g.loadFile(args[0]);
+        }
     }
 
 }

@@ -23,22 +23,32 @@ public class Machine {
     }
 
     // r should be reader of object file
-    void load(Reader r) {
-        if (!"H".equals(Utils.readString(r, 1))) {
-            errNotObjFile();
-            return;
-        }
-        Utils.readString(r, 18);
-
-        while (!"\nE".equals(Utils.readString(r, 2))) {
-            int codeAddress = Utils.readWord(r);
-            int codeLen = Utils.readByte(r);
-
-            for (int i = 0; i < codeLen; i++) {
-                memory.setByte(codeAddress + i, Utils.readByte(r));
+    void load(Reader r) throws Exception {
+            if (!"H".equals(Utils.readString(r, 1))) {
+                errNotObjFile();
+                return;
             }
-        }
-        registers.setPC(Utils.readWord(r));
+            Utils.readString(r, 18);
+
+            String newLine = Utils.readString(r, 2);
+            while (!newLine.equals("\nE")) {
+                if (newLine.equals("\nT")) {
+
+                    int codeAddress = Utils.readWord(r);
+                    int codeLen = Utils.readByte(r);
+                    
+                    for (int i = 0; i < codeLen; i++) {
+                        memory.setByte(codeAddress + i, Utils.readByte(r));
+                    }
+                    newLine = Utils.readString(r, 2);
+                } else {
+                    while (!newLine.equals("\n")) {
+                        newLine = Utils.readString(r, 1);
+                    }
+                    newLine += Utils.readString(r, 1);
+                }
+            }
+            registers.setPC(Utils.readWord(r));
         stopped = false;
     }
 

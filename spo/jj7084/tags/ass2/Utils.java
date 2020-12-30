@@ -1,37 +1,23 @@
 import java.io.Reader;
 
 public class Utils {
-    static String readString(Reader r, int len) {
+    static String readString(Reader r, int len) throws Exception {
         String out = "";
         for (int i = 0; i < len; i++) {
-            try {
-                out += (char) r.read();
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
+            out += (char) r.read();
         }
         return out;
     }
 
-    static int readByte(Reader r) {
-        try {
-            return (hexCharToInt((char) r.read()) << 4) + hexCharToInt((char) r.read());
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return 0;
-        }
+    static int readByte(Reader r) throws Exception {
+        return (hexCharToInt((char) r.read()) << 4) + hexCharToInt((char) r.read());
     }
 
-    static int readWord(Reader r) {
-        try {
-            return (readByte(r) << 16) | (readByte(r) << 8) | (readByte(r));
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return 0;
-        }
+    static int readWord(Reader r) throws Exception {
+        return (readByte(r) << 16) | (readByte(r) << 8) | (readByte(r));
     }
 
-    public static int hexCharToInt(char ch) {
+    public static int hexCharToInt(char ch) throws Exception {
         switch (ch) {
             case '0':
                 return 0;
@@ -66,8 +52,7 @@ public class Utils {
             case 'F':
                 return 15;
             default:
-                System.out.println("NON HEX CHAR FOUND");
-                return 0;
+                throw new Exception("Non hex character found: \"" + ch + "\"");
         }
     }
 }

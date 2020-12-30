@@ -1,0 +1,234 @@
+<html><header><title>p</title></header><body><pre>000000: <div id='0' style='color:blue;display:inline'>        </div>   p      START 0          <div style='color:lightgray;display:inline'></div>
+000000: <div id='0' style='color:blue;display:inline'>4B2176  </div>   pp     JSUB  stackinit  <div style='color:lightgray;display:inline'></div>
+000003: <div id='1' style='color:red;display:inline'>4B2033  </div>          JSUB  prepareTerms <div style='color:lightgray;display:inline'></div>
+000006: <div id='2' style='color:blue;display:inline'>4B2124  </div>          JSUB  drawCoord  <div style='color:lightgray;display:inline'></div>
+000009: <div id='3' style='color:red;display:inline'>07223C  </div>          LDX   *0(WORD -40) <div style='color:lightgray;display:inline'></div>
+00000C: <div id='4' style='color:blue;display:inline'>4B208F  </div>   loop   JSUB  calc       <div style='color:lightgray;display:inline'></div>
+00000F: <div id='5' style='color:red;display:inline'>272089  </div>          DIV   quotx      <div style='color:lightgray;display:inline'></div>
+000012: <div id='6' style='color:blue;display:inline'>0F215E  </div>          STA   y          <div style='color:lightgray;display:inline'></div>
+000015: <div id='7' style='color:red;display:inline'>132158  </div>          STX   x          <div style='color:lightgray;display:inline'></div>
+000018: <div id='8' style='color:blue;display:inline'>4B20D3  </div>          JSUB  drawPoint  <div style='color:lightgray;display:inline'></div>
+00001B: <div id='9' style='color:red;display:inline'>2F222D  </div>          TIX   *1(WORD 40) <div style='color:lightgray;display:inline'></div>
+00001E: <div id='10' style='color:blue;display:inline'>3B2FEB  </div>          JLT   loop       <div style='color:lightgray;display:inline'></div>
+000021: <div id='11' style='color:red;display:inline'>3F2FFD  </div>   halt   J     halt       <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  .......................Parameters............................</div>
+<div style='color:lightgray;display:inline'>                  . yscale should divide xscale</div>
+000024: <div id='12' style='color:blue;display:inline'>000004  </div>   yscale WORD  4          <div style='color:lightgray;display:inline'></div>
+000027: <div id='13' style='color:red;display:inline'>000008  </div>   xscale WORD  8          <div style='color:lightgray;display:inline'></div>
+00002A: <div id='14' style='color:blue;display:inline'>FFFFFD  </div>   polynom WORD  -3         <div style='color:lightgray;display:inline'> .x ^4</div>
+00002D: <div id='15' style='color:red;display:inline'>FFFFFF  </div>          WORD  -1         <div style='color:lightgray;display:inline'> . x^3</div>
+000030: <div id='16' style='color:blue;display:inline'>000002  </div>          WORD  2          <div style='color:lightgray;display:inline'> . x^2</div>
+000033: <div id='17' style='color:red;display:inline'>000003  </div>          WORD  3          <div style='color:lightgray;display:inline'> . x^1</div>
+000036: <div id='18' style='color:blue;display:inline'>000000  </div>   polycons WORD  0          <div style='color:lightgray;display:inline'> . x^0</div>
+000039: <div id='19' style='color:red;display:inline'>        </div>   polyend EQU   *          <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  ........................Term preperator......................</div>
+000039: <div id='19' style='color:red;display:inline'>162173  </div>   prepareTerms STL   @stackptr  <div style='color:lightgray;display:inline'></div>
+00003C: <div id='20' style='color:blue;display:inline'>4B2149  </div>          JSUB  stackpush  <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . calculate number of terms</div>
+00003F: <div id='21' style='color:red;display:inline'>012FF7  </div>          LDA   #polyend   <div style='color:lightgray;display:inline'></div>
+000042: <div id='22' style='color:blue;display:inline'>1D2FE5  </div>          SUB   #polynom   <div style='color:lightgray;display:inline'></div>
+000045: <div id='23' style='color:red;display:inline'>1F2206  </div>          SUB   *2(WORD 1) <div style='color:lightgray;display:inline'></div>
+000048: <div id='24' style='color:blue;display:inline'>272206  </div>          DIV   *3(WORD 3) <div style='color:lightgray;display:inline'></div>
+00004B: <div id='25' style='color:red;display:inline'>4B2036  </div>          JSUB  pow        <div style='color:lightgray;display:inline'> .calulate power of polynom</div>
+00004E: <div id='26' style='color:blue;display:inline'>272FD3  </div>          DIV   yscale     <div style='color:lightgray;display:inline'> </div>
+000051: <div id='27' style='color:red;display:inline'>0F2047  </div>          STA   quotx      <div style='color:lightgray;display:inline'> . was divided to avoid multipling and then dividing</div>
+000054: <div id='28' style='color:blue;display:inline'>232FCD  </div>          MUL   yscale     <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . iterate over all entries and multiply each with 8 time less</div>
+000057: <div id='29' style='color:red;display:inline'>6D2FDC  </div>          LDS   #polycons  <div style='color:lightgray;display:inline'></div>
+00005A: <div id='30' style='color:blue;display:inline'>7F208B  </div>          STS   polytmp    <div style='color:lightgray;display:inline'></div>
+00005D: <div id='31' style='color:red;display:inline'>762088  </div>   prepTermsLoop LDT   @polytmp   <div style='color:lightgray;display:inline'></div>
+000060: <div id='32' style='color:blue;display:inline'>9805    </div>          MULR  A, T       <div style='color:lightgray;display:inline'></div>
+000062: <div id='33' style='color:red;display:inline'>862083  </div>          STT   @polytmp   <div style='color:lightgray;display:inline'></div>
+000065: <div id='34' style='color:blue;display:inline'>272FBF  </div>          DIV   xscale     <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  .inc counter</div>
+000068: <div id='35' style='color:red;display:inline'>752FBF  </div>          LDT   #polynom   <div style='color:lightgray;display:inline'></div>
+00006B: <div id='36' style='color:blue;display:inline'>A045    </div>          COMPR S, T       <div style='color:lightgray;display:inline'></div>
+00006D: <div id='37' style='color:red;display:inline'>33200B  </div>          JEQ   endPrepTermsLoop <div style='color:lightgray;display:inline'></div>
+000070: <div id='38' style='color:blue;display:inline'>7721E1  </div>          LDT   *4(WORD 3) <div style='color:lightgray;display:inline'></div>
+000073: <div id='39' style='color:red;display:inline'>9454    </div>          SUBR  T, S       <div style='color:lightgray;display:inline'></div>
+000075: <div id='40' style='color:blue;display:inline'>7F2070  </div>          STS   polytmp    <div style='color:lightgray;display:inline'></div>
+000078: <div id='41' style='color:red;display:inline'>3F2FE2  </div>          J     prepTermsLoop <div style='color:lightgray;display:inline'></div>
+00007B: <div id='42' style='color:blue;display:inline'>4B211C  </div>   endPrepTermsLoop JSUB  stackpop   <div style='color:lightgray;display:inline'></div>
+00007E: <div id='43' style='color:red;display:inline'>0A212E  </div>          LDL   @stackptr  <div style='color:lightgray;display:inline'></div>
+000081: <div id='44' style='color:blue;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . loads xscale^A into A</div>
+000084: <div id='45' style='color:red;display:inline'>B410    </div>   pow    CLEAR X          <div style='color:lightgray;display:inline'></div>
+000086: <div id='46' style='color:blue;display:inline'>0F200F  </div>          STA   powVar     <div style='color:lightgray;display:inline'></div>
+000089: <div id='47' style='color:red;display:inline'>0321CB  </div>          LDA   *5(WORD 1) <div style='color:lightgray;display:inline'></div>
+00008C: <div id='48' style='color:blue;display:inline'>232F98  </div>   powloop MUL   xscale     <div style='color:lightgray;display:inline'></div>
+00008F: <div id='49' style='color:red;display:inline'>2F2006  </div>          TIX   powVar     <div style='color:lightgray;display:inline'></div>
+000092: <div id='50' style='color:blue;display:inline'>3B2FF7  </div>          JLT   powloop    <div style='color:lightgray;display:inline'></div>
+000095: <div id='51' style='color:red;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+000098: <div id='52' style='color:blue;display:inline'>000000  </div>   powVar WORD  0          <div style='color:lightgray;display:inline'></div>
+00009B: <div id='53' style='color:red;display:inline'>000000  </div>   quotx  WORD  0          <div style='color:lightgray;display:inline'> . quotient by which we divide</div>
+<div style='color:lightgray;display:inline'>                  .........................CALCULATOR.....................</div>
+<div style='color:lightgray;display:inline'>                  . calculates p(x) with x provieded in X. Output is returned in A</div>
+00009E: <div id='54' style='color:blue;display:inline'>16210E  </div>   calc   STL   @stackptr  <div style='color:lightgray;display:inline'></div>
+0000A1: <div id='55' style='color:red;display:inline'>4B20E4  </div>          JSUB  stackpush  <div style='color:lightgray;display:inline'></div>
+0000A4: <div id='56' style='color:blue;display:inline'>862108  </div>          STT   @stackptr  <div style='color:lightgray;display:inline'></div>
+0000A7: <div id='57' style='color:red;display:inline'>4B20DE  </div>          JSUB  stackpush  <div style='color:lightgray;display:inline'></div>
+0000AA: <div id='58' style='color:blue;display:inline'>7E2102  </div>          STS   @stackptr  <div style='color:lightgray;display:inline'></div>
+0000AD: <div id='59' style='color:red;display:inline'>4B20D8  </div>          JSUB  stackpush  <div style='color:lightgray;display:inline'></div>
+0000B0: <div id='60' style='color:blue;display:inline'>6D2F77  </div>          LDS   #polynom   <div style='color:lightgray;display:inline'> . init</div>
+0000B3: <div id='61' style='color:red;display:inline'>7F2035  </div>          STS   polyNext   <div style='color:lightgray;display:inline'></div>
+0000B6: <div id='62' style='color:blue;display:inline'>022032  </div>          LDA   @polyNext  <div style='color:lightgray;display:inline'> </div>
+<div style='color:lightgray;display:inline'>                  . callloop gets next polynom term constant and executes one step</div>
+<div style='color:lightgray;display:inline'>                  . of honer algorithm on it</div>
+<div style='color:lightgray;display:inline'>                  . S is used as pointer to terms</div>
+<div style='color:lightgray;display:inline'>                  . T is used for incrementing S and storing current term</div>
+<div style='color:lightgray;display:inline'>                  . increment polynext</div>
+0000B9: <div id='63' style='color:red;display:inline'>77219E  </div>   calloop LDT   *6(WORD 3) <div style='color:lightgray;display:inline'></div>
+0000BC: <div id='64' style='color:blue;display:inline'>9054    </div>          ADDR  T, S       <div style='color:lightgray;display:inline'> . increment polyNext</div>
+0000BE: <div id='65' style='color:red;display:inline'>7F202A  </div>          STS   polyNext   <div style='color:lightgray;display:inline'> .here polynext points to next polynom term</div>
+<div style='color:lightgray;display:inline'>                  . check if polynext is out of bounds</div>
+0000C1: <div id='66' style='color:blue;display:inline'>752F75  </div>          LDT   #polyend   <div style='color:lightgray;display:inline'></div>
+0000C4: <div id='67' style='color:red;display:inline'>A045    </div>          COMPR S, T       <div style='color:lightgray;display:inline'> . check if polynext is out of bounds</div>
+0000C6: <div id='68' style='color:blue;display:inline'>33200A  </div>          JEQ   calendloop <div style='color:lightgray;display:inline'> . polynext is out of bound -> return result</div>
+<div style='color:lightgray;display:inline'>                  . get next term</div>
+0000C9: <div id='69' style='color:red;display:inline'>76201F  </div>          LDT   @polyNext  <div style='color:lightgray;display:inline'> . T contains current term</div>
+<div style='color:lightgray;display:inline'>                  . horner is done here</div>
+0000CC: <div id='70' style='color:blue;display:inline'>9810    </div>          MULR  X, A       <div style='color:lightgray;display:inline'></div>
+0000CE: <div id='71' style='color:red;display:inline'>9050    </div>          ADDR  T, A       <div style='color:lightgray;display:inline'></div>
+0000D0: <div id='72' style='color:blue;display:inline'>3F2FE6  </div>          J     calloop    <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . restore registers</div>
+0000D3: <div id='73' style='color:red;display:inline'>4B20C4  </div>   calendloop JSUB  stackpop   <div style='color:lightgray;display:inline'></div>
+0000D6: <div id='74' style='color:blue;display:inline'>6E20D6  </div>          LDS   @stackptr  <div style='color:lightgray;display:inline'></div>
+0000D9: <div id='75' style='color:red;display:inline'>4B20BE  </div>          JSUB  stackpop   <div style='color:lightgray;display:inline'></div>
+0000DC: <div id='76' style='color:blue;display:inline'>7620D0  </div>          LDT   @stackptr  <div style='color:lightgray;display:inline'></div>
+0000DF: <div id='77' style='color:red;display:inline'>4B20B8  </div>          JSUB  stackpop   <div style='color:lightgray;display:inline'></div>
+0000E2: <div id='78' style='color:blue;display:inline'>0A20CA  </div>          LDL   @stackptr  <div style='color:lightgray;display:inline'></div>
+0000E5: <div id='79' style='color:red;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+0000E8: <div id='80' style='color:blue;display:inline'>000000  </div>   polytmp WORD  0          <div style='color:lightgray;display:inline'></div>
+0000EB: <div id='81' style='color:red;display:inline'>000000  </div>   polyNext WORD  0          <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  ...........................SCREEN...........................</div>
+<div style='color:lightgray;display:inline'>                  . #Columns = 80</div>
+<div style='color:lightgray;display:inline'>                  . #Rows = 25</div>
+<div style='color:lightgray;display:inline'>                  . drawn point on screen</div>
+0000EE: <div id='82' style='color:blue;display:inline'>0E20BE  </div>   drawPoint STA   @stackptr  <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . move xy coordss to screen coords</div>
+0000F1: <div id='83' style='color:red;display:inline'>03207C  </div>          LDA   x          <div style='color:lightgray;display:inline'></div>
+0000F4: <div id='84' style='color:blue;display:inline'>1B2166  </div>          ADD   *7(WORD 40) <div style='color:lightgray;display:inline'></div>
+0000F7: <div id='85' style='color:red;display:inline'>0F2076  </div>          STA   x          <div style='color:lightgray;display:inline'></div>
+0000FA: <div id='86' style='color:blue;display:inline'>032076  </div>          LDA   y          <div style='color:lightgray;display:inline'></div>
+0000FD: <div id='87' style='color:red;display:inline'>232160  </div>          MUL   *8(WORD -1) <div style='color:lightgray;display:inline'></div>
+000100: <div id='88' style='color:blue;display:inline'>1B2160  </div>          ADD   *9(WORD 12) <div style='color:lightgray;display:inline'></div>
+000103: <div id='89' style='color:red;display:inline'>0F206D  </div>          STA   y          <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . calculate point</div>
+000106: <div id='90' style='color:blue;display:inline'>03206A  </div>          LDA   y          <div style='color:lightgray;display:inline'></div>
+000109: <div id='91' style='color:red;display:inline'>23215A  </div>          MUL   *10(WORD 80) <div style='color:lightgray;display:inline'></div>
+00010C: <div id='92' style='color:blue;display:inline'>1B2061  </div>          ADD   x          <div style='color:lightgray;display:inline'></div>
+00010F: <div id='93' style='color:red;display:inline'>1B2058  </div>          ADD   screen     <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  .check if we are on screen</div>
+000112: <div id='94' style='color:blue;display:inline'>2B2055  </div>          COMP  screen     <div style='color:lightgray;display:inline'></div>
+000115: <div id='95' style='color:red;display:inline'>3B200F  </div>          JLT   drawPointEnd <div style='color:lightgray;display:inline'></div>
+000118: <div id='96' style='color:blue;display:inline'>2B2052  </div>          COMP  screenend  <div style='color:lightgray;display:inline'></div>
+00011B: <div id='97' style='color:red;display:inline'>372009  </div>          JGT   drawPointEnd <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  .drawing</div>
+00011E: <div id='98' style='color:blue;display:inline'>0F2055  </div>          STA   scrpos     <div style='color:lightgray;display:inline'></div>
+000121: <div id='99' style='color:red;display:inline'>032145  </div>          LDA   *11(WORD 42) <div style='color:lightgray;display:inline'></div>
+000124: <div id='100' style='color:blue;display:inline'>56204F  </div>          STCH  @scrpos    <div style='color:lightgray;display:inline'></div>
+000127: <div id='101' style='color:red;display:inline'>022085  </div>   drawPointEnd LDA   @stackptr  <div style='color:lightgray;display:inline'></div>
+00012A: <div id='102' style='color:blue;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . draws coord system</div>
+<div style='color:lightgray;display:inline'>                  . draw down</div>
+00012D: <div id='103' style='color:red;display:inline'>03203A  </div>   drawCoord LDA   screen     <div style='color:lightgray;display:inline'></div>
+000130: <div id='104' style='color:blue;display:inline'>1B2139  </div>          ADD   *12(WORD 39) <div style='color:lightgray;display:inline'></div>
+000133: <div id='105' style='color:red;display:inline'>B410    </div>          CLEAR X          <div style='color:lightgray;display:inline'></div>
+000135: <div id='106' style='color:blue;display:inline'>0F203E  </div>   drawCoordLoop1 STA   scrpos     <div style='color:lightgray;display:inline'></div>
+000138: <div id='107' style='color:red;display:inline'>032134  </div>          LDA   *13(WORD 124) <div style='color:lightgray;display:inline'> . |</div>
+00013B: <div id='108' style='color:blue;display:inline'>562038  </div>          STCH  @scrpos    <div style='color:lightgray;display:inline'></div>
+00013E: <div id='109' style='color:red;display:inline'>032035  </div>          LDA   scrpos     <div style='color:lightgray;display:inline'></div>
+000141: <div id='110' style='color:blue;display:inline'>1B212E  </div>          ADD   *14(WORD 80) <div style='color:lightgray;display:inline'></div>
+000144: <div id='111' style='color:red;display:inline'>2F212E  </div>          TIX   *15(WORD 25) <div style='color:lightgray;display:inline'></div>
+000147: <div id='112' style='color:blue;display:inline'>3B2FEB  </div>          JLT   drawCoordLoop1 <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . across</div>
+00014A: <div id='113' style='color:red;display:inline'>03201D  </div>          LDA   screen     <div style='color:lightgray;display:inline'></div>
+00014D: <div id='114' style='color:blue;display:inline'>1B2128  </div>          ADD   *16(WORD 961) <div style='color:lightgray;display:inline'></div>
+000150: <div id='115' style='color:red;display:inline'>B410    </div>          CLEAR X          <div style='color:lightgray;display:inline'></div>
+000152: <div id='116' style='color:blue;display:inline'>0F2021  </div>   drawCoordLoop2 STA   scrpos     <div style='color:lightgray;display:inline'></div>
+000155: <div id='117' style='color:red;display:inline'>032123  </div>          LDA   *17(WORD 45) <div style='color:lightgray;display:inline'> .</div>
+000158: <div id='118' style='color:blue;display:inline'>56201B  </div>          STCH  @scrpos    <div style='color:lightgray;display:inline'></div>
+00015B: <div id='119' style='color:red;display:inline'>032018  </div>          LDA   scrpos     <div style='color:lightgray;display:inline'></div>
+00015E: <div id='120' style='color:blue;display:inline'>1B211D  </div>          ADD   *18(WORD 1) <div style='color:lightgray;display:inline'></div>
+000161: <div id='121' style='color:red;display:inline'>2F211D  </div>          TIX   *19(WORD 80) <div style='color:lightgray;display:inline'></div>
+000164: <div id='122' style='color:blue;display:inline'>3B2FEB  </div>          JLT   drawCoordLoop2 <div style='color:lightgray;display:inline'></div>
+000167: <div id='123' style='color:red;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+00016A: <div id='124' style='color:blue;display:inline'>00B7FF  </div>   screen WORD  47103      <div style='color:lightgray;display:inline'> . B800</div>
+00016D: <div id='125' style='color:red;display:inline'>00BFD0  </div>   screenend WORD  49104      <div style='color:lightgray;display:inline'></div>
+000170: <div id='126' style='color:blue;display:inline'>000000  </div>   x      WORD  0          <div style='color:lightgray;display:inline'></div>
+000173: <div id='127' style='color:red;display:inline'>000000  </div>   y      WORD  0          <div style='color:lightgray;display:inline'></div>
+000176: <div id='128' style='color:blue;display:inline'>000000  </div>   scrpos WORD  0          <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  ........................... STACK ..........................</div>
+<div style='color:lightgray;display:inline'>                  . store values</div>
+000179: <div id='129' style='color:red;display:inline'>0F2030  </div>   stackinit STA   stacktmp   <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . init stackptr value</div>
+00017C: <div id='130' style='color:blue;display:inline'>012033  </div>          LDA   #stack     <div style='color:lightgray;display:inline'></div>
+00017F: <div id='131' style='color:red;display:inline'>0F202D  </div>          STA   stackptr   <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . restore values</div>
+000182: <div id='132' style='color:blue;display:inline'>032027  </div>          LDA   stacktmp   <div style='color:lightgray;display:inline'></div>
+000185: <div id='133' style='color:red;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . store values</div>
+000188: <div id='134' style='color:blue;display:inline'>0F2021  </div>   stackpush STA   stacktmp   <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . move pointer up</div>
+00018B: <div id='135' style='color:red;display:inline'>032021  </div>          LDA   stackptr   <div style='color:lightgray;display:inline'></div>
+00018E: <div id='136' style='color:blue;display:inline'>1B20F3  </div>          ADD   *20(WORD 3) <div style='color:lightgray;display:inline'></div>
+000191: <div id='137' style='color:red;display:inline'>0F201B  </div>          STA   stackptr   <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . restore values</div>
+000194: <div id='138' style='color:blue;display:inline'>032015  </div>          LDA   stacktmp   <div style='color:lightgray;display:inline'></div>
+000197: <div id='139' style='color:red;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . store values</div>
+00019A: <div id='140' style='color:blue;display:inline'>0F200F  </div>   stackpop STA   stacktmp   <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . move pointer down</div>
+00019D: <div id='141' style='color:red;display:inline'>03200F  </div>          LDA   stackptr   <div style='color:lightgray;display:inline'></div>
+0001A0: <div id='142' style='color:blue;display:inline'>1F20E4  </div>          SUB   *21(WORD 3) <div style='color:lightgray;display:inline'></div>
+0001A3: <div id='143' style='color:red;display:inline'>0F2009  </div>          STA   stackptr   <div style='color:lightgray;display:inline'></div>
+<div style='color:lightgray;display:inline'>                  . restore values</div>
+0001A6: <div id='144' style='color:blue;display:inline'>032003  </div>          LDA   stacktmp   <div style='color:lightgray;display:inline'></div>
+0001A9: <div id='145' style='color:red;display:inline'>4C0000  </div>          RSUB             <div style='color:lightgray;display:inline'></div>
+0001AC: <div id='146' style='color:blue;display:inline'>000000  </div>   stacktmp WORD  0          <div style='color:lightgray;display:inline'></div>
+0001AF: <div id='147' style='color:red;display:inline'>000000  </div>   stackptr WORD  0          <div style='color:lightgray;display:inline'></div>
+0001B2: <div id='148' style='color:blue;display:inline'>00..00  </div>   stack  RESW  50         <div style='color:lightgray;display:inline'></div>
+000248: <div id='148' style='color:blue;display:inline'>FFFFD8  </div>   *0     WORD  -40        <div style='color:lightgray;display:inline'></div>
+00024B: <div id='149' style='color:red;display:inline'>000028  </div>   *1     WORD  40         <div style='color:lightgray;display:inline'></div>
+00024E: <div id='150' style='color:blue;display:inline'>000001  </div>   *2     WORD  1          <div style='color:lightgray;display:inline'></div>
+000251: <div id='151' style='color:red;display:inline'>000003  </div>   *3     WORD  3          <div style='color:lightgray;display:inline'></div>
+000254: <div id='152' style='color:blue;display:inline'>000003  </div>   *4     WORD  3          <div style='color:lightgray;display:inline'></div>
+000257: <div id='153' style='color:red;display:inline'>000001  </div>   *5     WORD  1          <div style='color:lightgray;display:inline'></div>
+00025A: <div id='154' style='color:blue;display:inline'>000003  </div>   *6     WORD  3          <div style='color:lightgray;display:inline'></div>
+00025D: <div id='155' style='color:red;display:inline'>000028  </div>   *7     WORD  40         <div style='color:lightgray;display:inline'></div>
+000260: <div id='156' style='color:blue;display:inline'>FFFFFF  </div>   *8     WORD  -1         <div style='color:lightgray;display:inline'></div>
+000263: <div id='157' style='color:red;display:inline'>00000C  </div>   *9     WORD  12         <div style='color:lightgray;display:inline'></div>
+000266: <div id='158' style='color:blue;display:inline'>000050  </div>   *10    WORD  80         <div style='color:lightgray;display:inline'></div>
+000269: <div id='159' style='color:red;display:inline'>00002A  </div>   *11    WORD  42         <div style='color:lightgray;display:inline'></div>
+00026C: <div id='160' style='color:blue;display:inline'>000027  </div>   *12    WORD  39         <div style='color:lightgray;display:inline'></div>
+00026F: <div id='161' style='color:red;display:inline'>00007C  </div>   *13    WORD  124        <div style='color:lightgray;display:inline'></div>
+000272: <div id='162' style='color:blue;display:inline'>000050  </div>   *14    WORD  80         <div style='color:lightgray;display:inline'></div>
+000275: <div id='163' style='color:red;display:inline'>000019  </div>   *15    WORD  25         <div style='color:lightgray;display:inline'></div>
+000278: <div id='164' style='color:blue;display:inline'>0003C1  </div>   *16    WORD  961        <div style='color:lightgray;display:inline'></div>
+00027B: <div id='165' style='color:red;display:inline'>00002D  </div>   *17    WORD  45         <div style='color:lightgray;display:inline'></div>
+00027E: <div id='166' style='color:blue;display:inline'>000001  </div>   *18    WORD  1          <div style='color:lightgray;display:inline'></div>
+000281: <div id='167' style='color:red;display:inline'>000050  </div>   *19    WORD  80         <div style='color:lightgray;display:inline'></div>
+000284: <div id='168' style='color:blue;display:inline'>000003  </div>   *20    WORD  3          <div style='color:lightgray;display:inline'></div>
+000287: <div id='169' style='color:red;display:inline'>000003  </div>   *21    WORD  3          <div style='color:lightgray;display:inline'></div>
+<br>Hp     <div style='color:green;display:inline'>000000</div><div style='color:brown;display:inline'>00028A</div>
+T000000<b>1B</b><a href='#0' style='color:blue;display:inline;text-decoration: none;'>4B2176</a><a href='#1' style='color:red;display:inline;text-decoration: none;'>4B2033</a><a href='#2' style='color:blue;display:inline;text-decoration: none;'>4B2124</a><a href='#3' style='color:red;display:inline;text-decoration: none;'>07223C</a><a href='#4' style='color:blue;display:inline;text-decoration: none;'>4B208F</a><a href='#5' style='color:red;display:inline;text-decoration: none;'>272089</a><a href='#6' style='color:blue;display:inline;text-decoration: none;'>0F215E</a><a href='#7' style='color:red;display:inline;text-decoration: none;'>132158</a><a href='#8' style='color:blue;display:inline;text-decoration: none;'>4B20D3</a>
+T00001B<b>1B</b><a href='#9' style='color:red;display:inline;text-decoration: none;'>2F222D</a><a href='#10' style='color:blue;display:inline;text-decoration: none;'>3B2FEB</a><a href='#11' style='color:red;display:inline;text-decoration: none;'>3F2FFD</a><a href='#12' style='color:blue;display:inline;text-decoration: none;'>000004</a><a href='#13' style='color:red;display:inline;text-decoration: none;'>000008</a><a href='#14' style='color:blue;display:inline;text-decoration: none;'>FFFFFD</a><a href='#15' style='color:red;display:inline;text-decoration: none;'>FFFFFF</a><a href='#16' style='color:blue;display:inline;text-decoration: none;'>000002</a><a href='#17' style='color:red;display:inline;text-decoration: none;'>000003</a>
+T000036<b>1B</b><a href='#18' style='color:blue;display:inline;text-decoration: none;'>000000</a><a href='#19' style='color:red;display:inline;text-decoration: none;'>162173</a><a href='#20' style='color:blue;display:inline;text-decoration: none;'>4B2149</a><a href='#21' style='color:red;display:inline;text-decoration: none;'>012FF7</a><a href='#22' style='color:blue;display:inline;text-decoration: none;'>1D2FE5</a><a href='#23' style='color:red;display:inline;text-decoration: none;'>1F2206</a><a href='#24' style='color:blue;display:inline;text-decoration: none;'>272206</a><a href='#25' style='color:red;display:inline;text-decoration: none;'>4B2036</a><a href='#26' style='color:blue;display:inline;text-decoration: none;'>272FD3</a>
+T000051<b>1C</b><a href='#27' style='color:red;display:inline;text-decoration: none;'>0F2047</a><a href='#28' style='color:blue;display:inline;text-decoration: none;'>232FCD</a><a href='#29' style='color:red;display:inline;text-decoration: none;'>6D2FDC</a><a href='#30' style='color:blue;display:inline;text-decoration: none;'>7F208B</a><a href='#31' style='color:red;display:inline;text-decoration: none;'>762088</a><a href='#32' style='color:blue;display:inline;text-decoration: none;'>9805</a><a href='#33' style='color:red;display:inline;text-decoration: none;'>862083</a><a href='#34' style='color:blue;display:inline;text-decoration: none;'>272FBF</a><a href='#35' style='color:red;display:inline;text-decoration: none;'>752FBF</a><a href='#36' style='color:blue;display:inline;text-decoration: none;'>A045</a>
+T00006D<b>1C</b><a href='#37' style='color:red;display:inline;text-decoration: none;'>33200B</a><a href='#38' style='color:blue;display:inline;text-decoration: none;'>7721E1</a><a href='#39' style='color:red;display:inline;text-decoration: none;'>9454</a><a href='#40' style='color:blue;display:inline;text-decoration: none;'>7F2070</a><a href='#41' style='color:red;display:inline;text-decoration: none;'>3F2FE2</a><a href='#42' style='color:blue;display:inline;text-decoration: none;'>4B211C</a><a href='#43' style='color:red;display:inline;text-decoration: none;'>0A212E</a><a href='#44' style='color:blue;display:inline;text-decoration: none;'>4C0000</a><a href='#45' style='color:red;display:inline;text-decoration: none;'>B410</a><a href='#46' style='color:blue;display:inline;text-decoration: none;'>0F200F</a>
+T000089<b>1B</b><a href='#47' style='color:red;display:inline;text-decoration: none;'>0321CB</a><a href='#48' style='color:blue;display:inline;text-decoration: none;'>232F98</a><a href='#49' style='color:red;display:inline;text-decoration: none;'>2F2006</a><a href='#50' style='color:blue;display:inline;text-decoration: none;'>3B2FF7</a><a href='#51' style='color:red;display:inline;text-decoration: none;'>4C0000</a><a href='#52' style='color:blue;display:inline;text-decoration: none;'>000000</a><a href='#53' style='color:red;display:inline;text-decoration: none;'>000000</a><a href='#54' style='color:blue;display:inline;text-decoration: none;'>16210E</a><a href='#55' style='color:red;display:inline;text-decoration: none;'>4B20E4</a>
+T0000A4<b>1D</b><a href='#56' style='color:blue;display:inline;text-decoration: none;'>862108</a><a href='#57' style='color:red;display:inline;text-decoration: none;'>4B20DE</a><a href='#58' style='color:blue;display:inline;text-decoration: none;'>7E2102</a><a href='#59' style='color:red;display:inline;text-decoration: none;'>4B20D8</a><a href='#60' style='color:blue;display:inline;text-decoration: none;'>6D2F77</a><a href='#61' style='color:red;display:inline;text-decoration: none;'>7F2035</a><a href='#62' style='color:blue;display:inline;text-decoration: none;'>022032</a><a href='#63' style='color:red;display:inline;text-decoration: none;'>77219E</a><a href='#64' style='color:blue;display:inline;text-decoration: none;'>9054</a><a href='#65' style='color:red;display:inline;text-decoration: none;'>7F202A</a>
+T0000C1<b>1B</b><a href='#66' style='color:blue;display:inline;text-decoration: none;'>752F75</a><a href='#67' style='color:red;display:inline;text-decoration: none;'>A045</a><a href='#68' style='color:blue;display:inline;text-decoration: none;'>33200A</a><a href='#69' style='color:red;display:inline;text-decoration: none;'>76201F</a><a href='#70' style='color:blue;display:inline;text-decoration: none;'>9810</a><a href='#71' style='color:red;display:inline;text-decoration: none;'>9050</a><a href='#72' style='color:blue;display:inline;text-decoration: none;'>3F2FE6</a><a href='#73' style='color:red;display:inline;text-decoration: none;'>4B20C4</a><a href='#74' style='color:blue;display:inline;text-decoration: none;'>6E20D6</a><a href='#75' style='color:red;display:inline;text-decoration: none;'>4B20BE</a>
+T0000DC<b>1B</b><a href='#76' style='color:blue;display:inline;text-decoration: none;'>7620D0</a><a href='#77' style='color:red;display:inline;text-decoration: none;'>4B20B8</a><a href='#78' style='color:blue;display:inline;text-decoration: none;'>0A20CA</a><a href='#79' style='color:red;display:inline;text-decoration: none;'>4C0000</a><a href='#80' style='color:blue;display:inline;text-decoration: none;'>000000</a><a href='#81' style='color:red;display:inline;text-decoration: none;'>000000</a><a href='#82' style='color:blue;display:inline;text-decoration: none;'>0E20BE</a><a href='#83' style='color:red;display:inline;text-decoration: none;'>03207C</a><a href='#84' style='color:blue;display:inline;text-decoration: none;'>1B2166</a>
+T0000F7<b>1B</b><a href='#85' style='color:red;display:inline;text-decoration: none;'>0F2076</a><a href='#86' style='color:blue;display:inline;text-decoration: none;'>032076</a><a href='#87' style='color:red;display:inline;text-decoration: none;'>232160</a><a href='#88' style='color:blue;display:inline;text-decoration: none;'>1B2160</a><a href='#89' style='color:red;display:inline;text-decoration: none;'>0F206D</a><a href='#90' style='color:blue;display:inline;text-decoration: none;'>03206A</a><a href='#91' style='color:red;display:inline;text-decoration: none;'>23215A</a><a href='#92' style='color:blue;display:inline;text-decoration: none;'>1B2061</a><a href='#93' style='color:red;display:inline;text-decoration: none;'>1B2058</a>
+T000112<b>1B</b><a href='#94' style='color:blue;display:inline;text-decoration: none;'>2B2055</a><a href='#95' style='color:red;display:inline;text-decoration: none;'>3B200F</a><a href='#96' style='color:blue;display:inline;text-decoration: none;'>2B2052</a><a href='#97' style='color:red;display:inline;text-decoration: none;'>372009</a><a href='#98' style='color:blue;display:inline;text-decoration: none;'>0F2055</a><a href='#99' style='color:red;display:inline;text-decoration: none;'>032145</a><a href='#100' style='color:blue;display:inline;text-decoration: none;'>56204F</a><a href='#101' style='color:red;display:inline;text-decoration: none;'>022085</a><a href='#102' style='color:blue;display:inline;text-decoration: none;'>4C0000</a>
+T00012D<b>1D</b><a href='#103' style='color:red;display:inline;text-decoration: none;'>03203A</a><a href='#104' style='color:blue;display:inline;text-decoration: none;'>1B2139</a><a href='#105' style='color:red;display:inline;text-decoration: none;'>B410</a><a href='#106' style='color:blue;display:inline;text-decoration: none;'>0F203E</a><a href='#107' style='color:red;display:inline;text-decoration: none;'>032134</a><a href='#108' style='color:blue;display:inline;text-decoration: none;'>562038</a><a href='#109' style='color:red;display:inline;text-decoration: none;'>032035</a><a href='#110' style='color:blue;display:inline;text-decoration: none;'>1B212E</a><a href='#111' style='color:red;display:inline;text-decoration: none;'>2F212E</a><a href='#112' style='color:blue;display:inline;text-decoration: none;'>3B2FEB</a>
+T00014A<b>1D</b><a href='#113' style='color:red;display:inline;text-decoration: none;'>03201D</a><a href='#114' style='color:blue;display:inline;text-decoration: none;'>1B2128</a><a href='#115' style='color:red;display:inline;text-decoration: none;'>B410</a><a href='#116' style='color:blue;display:inline;text-decoration: none;'>0F2021</a><a href='#117' style='color:red;display:inline;text-decoration: none;'>032123</a><a href='#118' style='color:blue;display:inline;text-decoration: none;'>56201B</a><a href='#119' style='color:red;display:inline;text-decoration: none;'>032018</a><a href='#120' style='color:blue;display:inline;text-decoration: none;'>1B211D</a><a href='#121' style='color:red;display:inline;text-decoration: none;'>2F211D</a><a href='#122' style='color:blue;display:inline;text-decoration: none;'>3B2FEB</a>
+T000167<b>1B</b><a href='#123' style='color:red;display:inline;text-decoration: none;'>4C0000</a><a href='#124' style='color:blue;display:inline;text-decoration: none;'>00B7FF</a><a href='#125' style='color:red;display:inline;text-decoration: none;'>00BFD0</a><a href='#126' style='color:blue;display:inline;text-decoration: none;'>000000</a><a href='#127' style='color:red;display:inline;text-decoration: none;'>000000</a><a href='#128' style='color:blue;display:inline;text-decoration: none;'>000000</a><a href='#129' style='color:red;display:inline;text-decoration: none;'>0F2030</a><a href='#130' style='color:blue;display:inline;text-decoration: none;'>012033</a><a href='#131' style='color:red;display:inline;text-decoration: none;'>0F202D</a>
+T000182<b>1B</b><a href='#132' style='color:blue;display:inline;text-decoration: none;'>032027</a><a href='#133' style='color:red;display:inline;text-decoration: none;'>4C0000</a><a href='#134' style='color:blue;display:inline;text-decoration: none;'>0F2021</a><a href='#135' style='color:red;display:inline;text-decoration: none;'>032021</a><a href='#136' style='color:blue;display:inline;text-decoration: none;'>1B20F3</a><a href='#137' style='color:red;display:inline;text-decoration: none;'>0F201B</a><a href='#138' style='color:blue;display:inline;text-decoration: none;'>032015</a><a href='#139' style='color:red;display:inline;text-decoration: none;'>4C0000</a><a href='#140' style='color:blue;display:inline;text-decoration: none;'>0F200F</a>
+T00019D<b>15</b><a href='#141' style='color:red;display:inline;text-decoration: none;'>03200F</a><a href='#142' style='color:blue;display:inline;text-decoration: none;'>1F20E4</a><a href='#143' style='color:red;display:inline;text-decoration: none;'>0F2009</a><a href='#144' style='color:blue;display:inline;text-decoration: none;'>032003</a><a href='#145' style='color:red;display:inline;text-decoration: none;'>4C0000</a><a href='#146' style='color:blue;display:inline;text-decoration: none;'>000000</a><a href='#147' style='color:red;display:inline;text-decoration: none;'>000000</a>
+T000248<b>1B</b><a href='#148' style='color:blue;display:inline;text-decoration: none;'>FFFFD8</a><a href='#149' style='color:red;display:inline;text-decoration: none;'>000028</a><a href='#150' style='color:blue;display:inline;text-decoration: none;'>000001</a><a href='#151' style='color:red;display:inline;text-decoration: none;'>000003</a><a href='#152' style='color:blue;display:inline;text-decoration: none;'>000003</a><a href='#153' style='color:red;display:inline;text-decoration: none;'>000001</a><a href='#154' style='color:blue;display:inline;text-decoration: none;'>000003</a><a href='#155' style='color:red;display:inline;text-decoration: none;'>000028</a><a href='#156' style='color:blue;display:inline;text-decoration: none;'>FFFFFF</a>
+T000263<b>1B</b><a href='#157' style='color:red;display:inline;text-decoration: none;'>00000C</a><a href='#158' style='color:blue;display:inline;text-decoration: none;'>000050</a><a href='#159' style='color:red;display:inline;text-decoration: none;'>00002A</a><a href='#160' style='color:blue;display:inline;text-decoration: none;'>000027</a><a href='#161' style='color:red;display:inline;text-decoration: none;'>00007C</a><a href='#162' style='color:blue;display:inline;text-decoration: none;'>000050</a><a href='#163' style='color:red;display:inline;text-decoration: none;'>000019</a><a href='#164' style='color:blue;display:inline;text-decoration: none;'>0003C1</a><a href='#165' style='color:red;display:inline;text-decoration: none;'>00002D</a>
+T00027E<b>0C</b><a href='#166' style='color:blue;display:inline;text-decoration: none;'>000001</a><a href='#167' style='color:red;display:inline;text-decoration: none;'>000050</a><a href='#168' style='color:blue;display:inline;text-decoration: none;'>000003</a><a href='#169' style='color:red;display:inline;text-decoration: none;'>000003</a>
+E000000
+<pre></body></html>
