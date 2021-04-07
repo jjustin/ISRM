@@ -1,8 +1,0 @@
-    Darilo          Klobuk
-     8 GBP      10168 mEUR
-    12 GBP      25420 mEUR
-     1 USD      26209 mEUR
-     6 EUR      32209 mEUR
-     5 USD      36154 mEUR
-     6 EUR      42154 mEUR
-     1 GBP      43425 mEUR

@@ -1,3 +1,0 @@
-1. dan: 100 -> 85 (prehodil 15)
-2. dan: 85 -> 75 (prehodil 10)
-3. dan: 75 -> 70 (prehodil 5)

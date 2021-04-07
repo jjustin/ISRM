@@ -1,4 +1,0 @@
-1. dan: 28 -> 18 (prehodil 10)
-2. dan: 18 -> 9 (prehodil 9)
-3. dan: 9 -> 1 (prehodil 8)
-4. dan: 1 -> 0 (prehodil 1)
