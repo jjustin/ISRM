@@ -1,3 +1,16 @@
+[submodule "prpo/prpo-frontend"]
+	path = prpo/prpo-frontend
+	url = https://github.com/jjustin/prpo-frontend
+	branch = main
+[submodule "prpo/prpo-project"]
+	path = prpo/prpo-project
+	url = https://github.com/jjustin/prpo-project
+	branch = main
+[submodule "prpo/prpo-history"]
+	path = prpo/prpo-history
+	url = https://github.com/jjustin/prpo-history
+	branch = main
 [submodule "prpo/prpo-hello-world"]
 	path = prpo/prpo-hello-world
 	url = https://github.com/jjustin/prpo-hello-world
+	branch = main
