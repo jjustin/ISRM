@@ -1,42 +1,37 @@
+import numpy as np
 L1 = 5
 L2 = 7
 L3 = 11
 FITNESS_MATCH = 2
 
 ##########
-# LSFRs
+# LFSRs
 ##########
 
 def geffe(l:int, k1:list, k2:list, k3:list):
-    z = []
-    for i in range(l):
-        x1 = LSFR1(k1)
-        k1 = k1[1:] + [x1]
-        x2 = LSFR2(k2)
-        k2 = k2[1:] + [x2]
-        x3 = LSFR3(k3)
-        k3 = k3[1:] + [x3]
-        z.append((x1*x2+x2*x3+x3)%2)
-    return z
+    x1 = np.array(LFSR_calc(LFSR1, l, k1))
+    x2 = np.array(LFSR_calc(LFSR2, l, k2))
+    x3 = np.array(LFSR_calc(LFSR3, l, k3))
+    return ((x1*x2+x2*x3+x3)%2).tolist()
 
-def LSFR_calc(lsfr, l:int, k):
-    z = []
-    for i in range(l):
-        x = lsfr(k)
+def LFSR_calc(lfsr, l:int, k):
+    z = k.copy()
+    for i in range(l - len(k)):
+        x = lfsr(k)
         k = k[1:] + [x]
         z.append(x)
     return z
 
 
-def LSFR1(k: list):
+def LFSR1(k: list):
     # x^5 + x^2 + 1
     return (k[-5] + k[-2]) % 2
 
-def LSFR2(k: list):
+def LFSR2(k: list):
     # x^7 + x^1 + 1
     return (k[-7] + k[-1]) % 2
 
-def LSFR3(k: list):
+def LFSR3(k: list):
     # x^11 + x^2 + 1
     return (k[-11] + k[-2]) % 2 
 
@@ -80,13 +75,13 @@ def inc_key(k:list, depth:int):
 def count_matching(l1:list, l2:list):
     return sum([1 if l1[i]==l2[i] else 0 for i in range(len(l1))])
 
-def get_key1_3(diff, lsfr_f, k):
+def get_key1_3(diff, lfsr_f, k):
     known_len = len(diff)
     expected_match = 3/4 * known_len
     k_best = []
 
     for _ in range(pow(2, len(k))):
-        out = LSFR_calc(lsfr_f, known_len, k)
+        out = LFSR_calc(lfsr_f, known_len, k)
 
         fitness =abs(count_matching(out, diff) - expected_match)
         if(fitness <=  FITNESS_MATCH):
@@ -115,8 +110,8 @@ if __name__ == "__main__":
     # diff = B+C
     diff = [c_start[i]^start[i] for i in range(known_len)]
 
-    k1_arr = get_key1_3(diff, LSFR1, [0]*L1)
-    k3_arr = get_key1_3(diff, LSFR3, [0]*L3)
+    k1_arr = get_key1_3(diff, LFSR1, [0]*L1)
+    k3_arr = get_key1_3(diff, LFSR3, [0]*L3)
 
     k2 = []
     for k3 in k3_arr:
