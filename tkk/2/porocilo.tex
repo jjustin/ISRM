@@ -14,20 +14,17 @@
 \maketitle
 
 \section{Geffejev generator}
-Reševal sem nalogo pod opombo 1, torej s poznanim začetkom kriptograma.
 \subsection{Podatki}
-Niz bitov predstavim kot seznam, ki vsebuje 0 in 1. Začetni ključ (in tekoče zaporedje zadnjih $m$ rezultatov registra) predstavim, kot seznam dolžine $m$, če je register predstavljen s polinomom dolžine $m$.  Polinome sem vgradil kar v funkcije, ki predstavljajo posamezen register.
+Niz bitov predstavim kot seznam, ki vsebuje 0 in 1. Začetni ključ predstavim, kot seznam dolžine $m$, kjer je register predstavljen s polinomom stopnje $m$. Polinome sem "vgradil" kar v funkcije, ki predstavljajo posamezen register.
 \subsection{Registra 1 in 3}
-Izkorstim dejstvo, da se $\frac{3}{4}$ izhodov registra 1 ali 3 ponovi v izhodu generatorja. Naj bodo: 
+Ker se $\frac{3}{4}$ izhodov registrov ponovi v generatorju, upam na to, da se ob "najuspešnejšem" ključu generira zaporednje, ki ga prištejem kriptogramu, kar mi izpljune besedilo z najvecjim številom legalnih znakov (torej najmanj peterk bitov, ki predstavljajo števila med 26 in 32). Tako pregledam vse ključe in izbrem tistega, pri katerem dobim najmanj ilegalnih znakov.
+\subsection{Regsiter 2}
+Pretečem vse ključe in izberem tistega, s katerim lahko odkriptiram besedilo brez ilegalnih znakov.
+\subsection{Opombe}
 \begin{itemize}
-    \item $s$ poznan začetek besedila dolžine $n$ oz. $5n$ poznanih bitov
-    \item $c_s$ prvih $5n$ bitov kripograma
-    \item $d = s\oplus c_s$
+    \item Znalo bi se zgoditi, da bi moral za registra 1 in 3 shraniti nekaj najboljših ključev in pregledati njihove kombinacije.
+    \item Pri registru 2 je možno, da bi za kakšen drug kriptogram dobili več možnih besedil. Ta problem bi bil rešljiv s kriptoanalizo teh besedil.
 \end{itemize}
-Potem se mora izhod registra 1 in 3 z $d$ ujemati v približno $\frac{3n}{4}$ bitih. Pretečem vse ključe in gledam pri katerem ključu je najboljše ujemanje. Najboljši ujemanji predstavim kot ključa registra 1 in 3.\\ Kasneje se je izkazalo, da ta pristop ni "primeren". Program namreč najde ključ 3. registra, ki od pričakovanega ujemanja odstopa za samo 1, pravi ključ pa odstopa za 2. Zato sem namesto zgolj "optimalnega" ključa vrnil seznam potencialnih ključev(ki od pričakovanega neujemanja odstopajo za manj kot neko konstanto), ki jih potem vse pregledam za iskanje ključa 2.
-\subsection{Register 2}
-V funkciji za iskanje ključa registra 2 gledam pri katerem ključu se bo v kombinaciji z že najdenima ključoma 1 in 3 generiralo zaporednje enako $d$-ju. S takim ključom lahko dekriptiram dani kriptogram v besedilo.\\
-Ključa 1 in 3 sta lahko katerakoli kombinacija ključev najdenih v prejšnji točki.
 \subsection{Rezultat}
 Priloženi kriptogram se prevede v:\\
    \textbf{\seqsplit{CRYPTOGRAPHYPRIORTOTHEMODERNAGEWASEFFECTIVELYSYNONYMOUSWITHENCRYPTIONTHECONVERSIONOFINFORMATIONFROMAREADABLESTATETOAPPARENTNONSENSETHEORIGINATOROFANENCRYPTEDMESSAGEALICESHAREDTHEDECODINGTECHNIQUENEEDEDTORECOVERTHEORIGINALINFORMATIONONLYWITHINTENDEDRECIPIENTSBOBTHEREBYPRECLUDINGUNWANTEDPERSONSEVEFROMDOINGTHESAMETHECRYPTOGRAPHYLITERATUREOFTENUSESALICEAFORTHESENDERBOBBFORTHEINTENDEDRECIPIENTANDEVEEAVESDROPPERFORTHEADVERSARYSINCETHEDEVELOPMENTOFROTORCIPHERMACHINESINWORLDWARIANDTHEADVENTOFCOMPUTERSINWORLDWARIITHEMETHODSUSEDTOCARRYOUTCRYPTOLOGYHAVEBECOMEINCREASINGLYCOMPLEXANDITSAPPLICATIONMOREWIDESPREAD}}\\

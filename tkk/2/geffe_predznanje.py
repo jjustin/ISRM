@@ -1,4 +1,3 @@
-import numpy as np
 L1 = 5
 L2 = 7
 L3 = 11
@@ -9,10 +8,10 @@ FITNESS_MATCH = 2
 ##########
 
 def geffe(l:int, k1:list, k2:list, k3:list):
-    x1 = np.array(LFSR_calc(LFSR1, l, k1))
-    x2 = np.array(LFSR_calc(LFSR2, l, k2))
-    x3 = np.array(LFSR_calc(LFSR3, l, k3))
-    return ((x1*x2+x2*x3+x3)%2).tolist()
+    x1 =LFSR_calc(LFSR1, l, k1)
+    x2 =LFSR_calc(LFSR2, l, k2)
+    x3 =LFSR_calc(LFSR3, l, k3)
+    return [(x1[i]*x2[i]+x2[i]*x3[i]+x3[i])%2 for i in range(l)]
 
 def LFSR_calc(lfsr, l:int, k):
     z = k.copy()
