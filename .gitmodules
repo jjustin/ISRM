@@ -14,3 +14,6 @@
 	path = prpo/prpo-hello-world
 	url = https://github.com/jjustin/prpo-hello-world
 	branch = main
+[submodule "oo/proj1"]
+	path = oo/proj1
+	url = https://github.com/jjustin/photo-stretcher
